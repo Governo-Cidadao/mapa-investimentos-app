@@ -9,10 +9,10 @@ import { TerritorioService } from '../../service/territorio.service';
   styleUrl: './map.component.css'
 })
 export class MapComponent implements AfterViewInit {
-  private map!: L.Map;
-  private layerControl!: L.Control;
-  private baseMapURl: string = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-  private INITIAL_COORD = [-5.844865661075205, -36.56710587301696]
+  map!: L.Map;
+  layerControl!: L.Control;
+  baseMapURl: string = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+  INITIAL_COORD = [-5.844865661075205, -36.56710587301696]
 
   constructor(
     private estadoService: EstadoService,
@@ -25,7 +25,7 @@ export class MapComponent implements AfterViewInit {
     this.getTerritorioLayer();
   }
 
-  private initializeMap() {
+  initializeMap() {
     this.map = L.map('map', {
       center: new L.LatLng(this.INITIAL_COORD[0], this.INITIAL_COORD[1]),
       zoom: 8,
@@ -41,14 +41,10 @@ export class MapComponent implements AfterViewInit {
     }).addTo(this.map);
 
     this.map.attributionControl.setPrefix("");
-    this.initializeLayerControl();
-  }
-
-  private initializeLayerControl() {
     this.layerControl = L.control.layers({}).addTo(this.map);
   }
 
-  private getBrazilLayer() {
+  getBrazilLayer() {
     const brazilStyle = {
       "color": "#111",
       "weight": 0,
@@ -61,7 +57,7 @@ export class MapComponent implements AfterViewInit {
       });
   }
 
-  private getTerritorioLayer() {
+  getTerritorioLayer() {
     const whiteBackground = {
       "opacity": 1,
       "color": 'rgba(250,250,250,1.0)',

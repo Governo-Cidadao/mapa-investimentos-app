@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
+  readonly headerImage = "assets/Barra_Mapa_Investimentos.jpg"
 }
