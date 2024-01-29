@@ -2,6 +2,7 @@ import { AfterViewInit, Component } from '@angular/core';
 import * as L from 'leaflet';
 import { EstadoService } from '../../service/estado.service';
 import { TerritorioService } from '../../service/territorio.service';
+import { MiniMap } from 'leaflet-control-mini-map';
 
 @Component({
   selector: 'app-map',
@@ -21,6 +22,7 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initializeMap();
+    this.initializeMiniMap()
     this.getBrazilLayer();
     this.getTerritorioLayer();
   }
@@ -42,6 +44,18 @@ export class MapComponent implements AfterViewInit {
 
     this.map.attributionControl.setPrefix("");
     this.layerControl = L.control.layers({}).addTo(this.map);
+  }
+
+  private initializeMiniMap() {
+    const base_minimap = L.tileLayer(this.baseMapURl, {
+      maxZoom: 30,
+    })
+
+    const minimap = new MiniMap(base_minimap, {
+      toggleDisplay: true
+    });
+
+    minimap.addTo(this.map);
   }
 
   getBrazilLayer() {
