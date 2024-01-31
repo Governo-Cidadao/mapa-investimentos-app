@@ -1,61 +1,58 @@
-import { AfterViewInit, Component } from '@angular/core';
-import * as L from 'leaflet';
+import { Component } from '@angular/core';
+import L, { Map, latLng, tileLayer } from 'leaflet';
 import { EstadoService } from '../../service/estado.service';
 import { TerritorioService } from '../../service/territorio.service';
 import { MiniMap } from 'leaflet-control-mini-map';
-
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrl: './map.component.css'
 })
-export class MapComponent implements AfterViewInit {
-  map!: L.Map;
-  layerControl!: L.Control;
-  baseMapURl: string = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-  INITIAL_COORD = [-5.844865661075205, -36.56710587301696]
+export class MapComponent {
+  INITIAL_COORD = [-5.844865661075205, -36.56710587301696];
+  baseMapURl: string = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  layers: L.LayerGroup = new L.LayerGroup();
+  layerControl!: L.Control.Layers;
+
+  options = {
+    layers: [
+      tileLayer(this.baseMapURl, { maxZoom: 12, attribution: '© contributors: @joabesamuell, @_ig0rdias, @celilimaf, @rodmatth, @jonas.ssilva' })
+    ],
+    zoom: 8,
+    attributionControl: false,
+    zoomControl: true,
+    minZoom: 8,
+    maxZoom: 12,
+    zoomSnap: 0.10,
+    closePopupOnClick: false,
+    doubleClickZoom: false,
+    center: latLng(this.INITIAL_COORD[0], this.INITIAL_COORD[1])
+  };
 
   constructor(
     private estadoService: EstadoService,
     private territorioService: TerritorioService
   ) { }
 
-  ngAfterViewInit(): void {
-    this.initializeMap();
-    this.initializeMiniMap()
+  onMapReady(map: Map) {
+    this.initializeLayerControl(map);
+    this.initializeMiniMap(map);
     this.getBrazilLayer();
     this.getTerritorioLayer();
   }
 
-  initializeMap() {
-    this.map = L.map('map', {
-      center: new L.LatLng(this.INITIAL_COORD[0], this.INITIAL_COORD[1]),
-      zoom: 8,
-      zoomControl: true,
-      minZoom: 8,
-      maxZoom: 12,
-      zoomSnap: 0.10,
-      closePopupOnClick: false,
-    });
-
-    L.tileLayer(this.baseMapURl, {
-      attribution: "© contributors: @joabesamuell, @_ig0rdias, @celilimaf, @rodmatth, @jonas.ssilva"
-    }).addTo(this.map);
-
-    this.map.attributionControl.setPrefix("");
-    this.layerControl = L.control.layers({}).addTo(this.map);
+  initializeLayerControl(map: Map) {
+    this.layerControl = L.control.layers({}).addTo(map);
   }
 
-  private initializeMiniMap() {
-    const base_minimap = L.tileLayer(this.baseMapURl, {
+  initializeMiniMap(map: Map) {
+    const baseMinimap = L.tileLayer(this.baseMapURl, {
       maxZoom: 30,
     })
 
-    const minimap = new MiniMap(base_minimap, {
+    new MiniMap(baseMinimap, {
       toggleDisplay: true
-    });
-
-    minimap.addTo(this.map);
+    }).addTo(map);
   }
 
   getBrazilLayer() {
@@ -67,7 +64,7 @@ export class MapComponent implements AfterViewInit {
 
     this.estadoService.findAll()
       .subscribe(response => {
-        new L.GeoJSON(response, { style: brazilStyle }).addTo(this.map);
+        new L.GeoJSON(response, { style: brazilStyle }).addTo(this.layers);
       });
   }
 
@@ -84,7 +81,9 @@ export class MapComponent implements AfterViewInit {
 
     this.territorioService.findAll()
       .subscribe(response => {
-        new L.GeoJSON(response, { style: whiteBackground }).addTo(this.map);
+        const territorio = new L.GeoJSON(response, { style: whiteBackground })
+          .addTo(this.layers);
+        this.layerControl.addOverlay(territorio, "Territórios");
       })
   }
 }

@@ -1,2 +1,7 @@
 <app-header></app-header>
-<div id="map"></div>
+<div style="height: 92.6vh;"
+     leaflet
+     (leafletMapReady)="onMapReady($event)"
+     [leafletOptions]="options"
+     [leafletLayer]="layers">
+</div>
