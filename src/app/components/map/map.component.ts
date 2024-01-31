@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import L, { Map, latLng, tileLayer } from 'leaflet';
-import { EstadoService } from '../../service/estado.service';
-import { TerritorioService } from '../../service/territorio.service';
 import { MiniMap } from 'leaflet-control-mini-map';
+import { EstadoService } from '../../service/estado.service';
+import { InvestimentosService } from '../../service/investimentos.service';
+import { TerritorioService } from '../../service/territorio.service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -31,21 +32,23 @@ export class MapComponent {
 
   constructor(
     private estadoService: EstadoService,
-    private territorioService: TerritorioService
+    private territorioService: TerritorioService,
+    private investimentoService: InvestimentosService
   ) { }
 
-  onMapReady(map: Map) {
+  onMapReady(map: Map): void {
     this.initializeLayerControl(map);
     this.initializeMiniMap(map);
     this.getBrazilLayer();
     this.getTerritorioLayer();
+    this.getInvestimentosLayer("");
   }
 
-  initializeLayerControl(map: Map) {
+  initializeLayerControl(map: Map): void {
     this.layerControl = L.control.layers({}).addTo(map);
   }
 
-  initializeMiniMap(map: Map) {
+  initializeMiniMap(map: Map): void {
     const baseMinimap = L.tileLayer(this.baseMapURl, {
       maxZoom: 30,
     })
@@ -55,7 +58,7 @@ export class MapComponent {
     }).addTo(map);
   }
 
-  getBrazilLayer() {
+  getBrazilLayer(): void {
     const brazilStyle = {
       "color": "#111",
       "weight": 0,
@@ -68,7 +71,7 @@ export class MapComponent {
       });
   }
 
-  getTerritorioLayer() {
+  getTerritorioLayer(): void {
     const whiteBackground = {
       "opacity": 1,
       "color": 'rgba(250,250,250,1.0)',
@@ -84,6 +87,14 @@ export class MapComponent {
         const territorio = new L.GeoJSON(response, { style: whiteBackground })
           .addTo(this.layers);
         this.layerControl.addOverlay(territorio, "Territórios");
-      })
+      });
+  }
+
+  getInvestimentosLayer(filter: string): void {
+    this.investimentoService.findAll(filter).subscribe(
+      response => {
+        const invest = new L.GeoJSON(response).addTo(this.layers);
+        this.layerControl.addOverlay(invest, "Investimentos");
+      });
   }
 }
