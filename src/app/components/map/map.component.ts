@@ -4,6 +4,7 @@ import { MiniMap } from 'leaflet-control-mini-map';
 import { EstadoService } from '../../service/estado.service';
 import { InvestimentosService } from '../../service/investimentos.service';
 import { TerritorioService } from '../../service/territorio.service';
+import { FeatureUtils } from '../../utils/feature.utils';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -93,7 +94,9 @@ export class MapComponent {
   getInvestimentosLayer(filter: string): void {
     this.investimentoService.findAll(filter).subscribe(
       response => {
-        const invest = new L.GeoJSON(response).addTo(this.layers);
+        const invest = new L.GeoJSON(response, {
+          pointToLayer: FeatureUtils.setCustomMark
+        }).addTo(this.layers);
         this.layerControl.addOverlay(invest, "Investimentos");
       });
   }
