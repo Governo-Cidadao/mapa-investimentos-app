@@ -19,7 +19,6 @@ export class FeatureUtils {
     }
 
     public static getIconPath(feature: Feature, basePath: string): string {
-        console.log(feature);
         if (!feature.properties)
             return "";
 
