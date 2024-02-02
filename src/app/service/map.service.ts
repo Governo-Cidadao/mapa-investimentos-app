@@ -12,4 +12,12 @@ export class MapService {
   setMap(map: Map): void {
     this.mapSubject.next(map);
   }
+
+  getMapInstance(): Map | null {
+    let mapInstance: Map | null = null;
+    this.map$.subscribe((map) => {
+      mapInstance = map;
+    });
+    return mapInstance;
+  }
 }
