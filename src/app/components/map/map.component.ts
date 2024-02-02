@@ -5,6 +5,7 @@ import { EstadoService } from '../../service/estado.service';
 import { InvestimentosService } from '../../service/investimentos.service';
 import { TerritorioService } from '../../service/territorio.service';
 import { FeatureUtils } from '../../utils/feature.utils';
+import { MapService } from '../../service/map.service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -32,6 +33,7 @@ export class MapComponent {
   };
 
   constructor(
+    private mapService: MapService,
     private estadoService: EstadoService,
     private territorioService: TerritorioService,
     private investimentoService: InvestimentosService
@@ -43,6 +45,7 @@ export class MapComponent {
     this.getBrazilLayer();
     this.getTerritorioLayer();
     this.getInvestimentosLayer("");
+    this.mapService.setMap(map);
   }
 
   initializeLayerControl(map: Map): void {
