@@ -11,7 +11,7 @@ export class MapService {
     this.map = map;
   }
 
-  getMap(): Map | null {
+  getMap(): Map {
     return this.map;
   }
 }
