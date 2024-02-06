@@ -1,0 +1,218 @@
+/* Utils */
+.bkg-btn {
+    background: #CCC;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.bkg-btn:hover {
+    background: #999;
+    transition: ease-in-out 0.15s;
+}
+
+/* Container section */
+.container-controller {
+    height: 125px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 500;
+    position: absolute;
+    top: 150px;
+    left: 100px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);
+    user-select: none;
+}
+
+/* Nav controller section */
+.nav-controller {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    padding: 10px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: relative;
+}
+
+.center-button {
+    display: flex;
+    height: 38%;
+    width: 38%;
+    position: absolute;
+    top: 28%;
+    left: 28%;
+    border-radius: 50%;
+    border: 1px solid white;
+    justify-content: center;
+    align-items: center;
+}
+
+.center-button img {
+    height: 35px;
+    width: 25px;
+    transform: rotate(315deg);
+}
+
+.button {
+    display: flex;
+    width: 46%;
+    height: 46%;
+    margin: 1px;
+    position: relative;
+    float: left;
+    justify-content: center;
+    align-items: center;
+}
+
+.button.top {
+    border-radius: 100% 0 0 0;
+}
+
+.button.top::after {
+    bottom: 0;
+    right: 0;
+    -webkit-transform: skew(-3deg, -3deg) scale(0.96);
+    -moz-transform: skew(-3deg, -3deg) scale(0.96);
+    transform: skew(-3deg, -3deg) scale(0.96);
+}
+
+.button.right {
+    border-radius: 0 100% 0 0;
+}
+
+.button.right::after {
+    bottom: 0;
+    left: 0;
+    -webkit-transform: skew(3deg, 3deg) scale(0.96);
+    -moz-transform: skew(3deg, 3deg) scale(0.96);
+    transform: skew(3deg, 3deg) scale(0.96);
+}
+
+.button.left {
+    border-radius: 0 0 0 100%;
+}
+
+.button.left::after {
+    top: 0;
+    right: 0;
+    -webkit-transform: skew(3deg, 3deg) scale(0.96);
+    -moz-transform: skew(3deg, 3deg) scale(0.96);
+    transform: skew(3deg, 3deg) scale(0.96);
+}
+
+.button.bottom {
+    border-radius: 0 0 100% 0;
+}
+
+.button.bottom::after {
+    top: 0;
+    left: 0;
+    -webkit-transform: skew(-3deg, -3deg) scale(0.96);
+    -moz-transform: skew(-3deg, -3deg) scale(0.96);
+    transform: skew(-3deg, -3deg) scale(0.96);
+}
+
+.button img {
+    height: 14px;
+    width: 10px;
+    transform: rotate(315deg);
+}
+
+/* Buttons zooms section */
+
+.btn-zoom {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.zoom-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 25px;
+    border-top-left-radius: 25%;
+    border-top-right-radius: 25%;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 25px;
+    background: #CCC;
+}
+
+.zoom-out {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    width: 25px;
+    border-bottom-left-radius: 25%;
+    border-bottom-right-radius: 25%;
+}
+
+.btn-zoom img {
+    height: 10px;
+    width: 10px;
+}
+
+.search img {
+    height: 30px;
+}
+
+.arrastavel{
+    background-color: none;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    cursor: grab;
+}
+
+.container-controller-mobile{
+    display: none;
+}
+
+@media only screen and (max-width: 480px) {
+    .container-controller{
+        display: none;
+    }
+    .container-controller-mobile{
+        display: flex;;
+        width: 100%;
+        height: 100px;
+        position: absolute;
+        bottom: 15px;
+        z-index: 1000;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .button_controller-mobile{
+        width: 60px;
+        height: 60px;
+        background-color: #fff;
+        border-radius: 50%;
+        box-shadow: 6px 6px 8px rgba(0, 0, 0, 0.4);
+        text-align: center;
+        border: none;
+        line-height: 75px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #ccc;
+    }
+    .button_controller-mobile img{
+        width: 30px;
+        height: 30px;
+    }
+  }
