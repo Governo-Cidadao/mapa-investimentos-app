@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { ControllerComponent } from './components/controller/controller.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ControllerComponent } from './components/controller/controller.componen
     AppRoutingModule,
     LeafletModule,
     HttpClientModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

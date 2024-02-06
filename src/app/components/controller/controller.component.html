@@ -1,33 +1,38 @@
-
 <div class="container-controller">
-    <button class="arrastavel"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>
-    <div class="nav-controller">
-      <div class="button top bkg-btn" (click)="mover(0, 0.14)" (mousedown)="movimentacao(0, 0.14, true)" (mouseup)="movimentacao(0, 0.14, false)">
-        <img src="../../../assets/controller/up_arrow.svg">
-      </div> 
-      <div class="button right bkg-btn" (click)="mover(0.14, 0)" (mousedown)="movimentacao(0.14, 0, true)" (mouseup)="movimentacao(0.14, 0, false)">
-        <img src="../../../assets/controller/right_arrow.svg">
-      </div>
-      <div class="button left bkg-btn" (click)="mover(-0.14, 0)" (mousedown)="movimentacao(-0.14, 0, true)" (mouseup)="movimentacao(-0.14, 0, false)">
-        <img src="../../../assets/controller/left_arrow.svg">
-      </div>
-      <div class="button bottom bkg-btn" (click)="mover(0, -0.14)" (mousedown)="movimentacao(0, -0.14, true)" (mouseup)="movimentacao(0, -0.14, false)">
-        <img src="../../../assets/controller/down_arrow.svg">
-      </div>
-      <div class="center-button bkg-btn" (click) ="centralizarMapa()">
-        <img src="../../../assets/controller/home.svg">
-      </div>
+  <button class="arrastavel">
+    <fa-icon [icon]="faArrowsAlt"></fa-icon> 
+  </button>
+  <div class="nav-controller">
+    <div class="button top bkg-btn" (click)="mover(0, 0.14)" (mousedown)="movimentacao(0, 0.14, true)"
+      (mouseup)="movimentacao(0, 0.14, false)">
+      <img src="../../../assets/controller/up_arrow.svg">
     </div>
-    <div class="btn-zoom">
-        <div class="zoom-in bkg-btn" (click)="zoomIn()">
-        <img src="../../../assets/controller/plus.svg">
-      </div>
-      <div class="search">
-        <img src="../../../assets/controller/mag.svg">
-      </div>
-      <div class="zoom-out bkg-btn" (click)="zoomOut()">
-        <img src="../../../assets/controller/minus.svg">
-      </div>
+    <div class="button right bkg-btn" (click)="mover(0.14, 0)" (mousedown)="movimentacao(0.14, 0, true)"
+      (mouseup)="movimentacao(0.14, 0, false)">
+      <img src="../../../assets/controller/right_arrow.svg">
     </div>
-
+    <div class="button left bkg-btn" (click)="mover(-0.14, 0)" (mousedown)="movimentacao(-0.14, 0, true)"
+      (mouseup)="movimentacao(-0.14, 0, false)">
+      <img src="../../../assets/controller/left_arrow.svg">
+    </div>
+    <div class="button bottom bkg-btn" (click)="mover(0, -0.14)" (mousedown)="movimentacao(0, -0.14, true)"
+      (mouseup)="movimentacao(0, -0.14, false)">
+      <img src="../../../assets/controller/down_arrow.svg">
+    </div>
+    <div class="center-button bkg-btn" (click)="centralizarMapa()">
+      <img src="../../../assets/controller/home.svg">
+    </div>
   </div>
+  <div class="btn-zoom">
+    <div class="zoom-in bkg-btn" (click)="zoomIn()">
+      <img src="../../../assets/controller/plus.svg">
+    </div>
+    <div class="search">
+      <img src="../../../assets/controller/mag.svg">
+    </div>
+    <div class="zoom-out bkg-btn" (click)="zoomOut()">
+      <img src="../../../assets/controller/minus.svg">
+    </div>
+  </div>
+
+</div>
