@@ -1,8 +1,9 @@
 <app-header></app-header>
 <app-controller></app-controller>
 <div style="height: 92.6vh;"
-     leaflet
-     (leafletMapReady)="onMapReady($event)"
-     [leafletOptions]="options"
-     [leafletLayer]="layers">
+leaflet
+(leafletMapReady)="onMapReady($event)"
+[leafletOptions]="options"
+[leafletLayer]="layers">
+<app-virtual-keyboard></app-virtual-keyboard>
 </div>

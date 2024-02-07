@@ -10,6 +10,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { MapComponent } from './components/map/map.component';
 import { ControllerComponent } from './components/controller/controller.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { VirtualKeyboardComponent } from './components/virtual-keyboard/virtual-keyboard.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MapComponent,
     HeaderComponent,
     ControllerComponent,
+    VirtualKeyboardComponent,
   ],
   imports: [
     BrowserModule,
