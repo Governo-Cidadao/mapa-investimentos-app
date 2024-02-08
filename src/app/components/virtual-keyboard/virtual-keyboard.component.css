@@ -47,3 +47,17 @@ input[type="text"] {
     margin-right: 4px;
     font-size: 16px;
 }
+
+.backspace{
+    width: 60px;
+}
+.space{
+    display: flex;
+    width: 80px;
+    align-items: center;
+    justify-content: center;
+}
+
+.space img{
+    width: 20px;
+}

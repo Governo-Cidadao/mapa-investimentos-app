@@ -1,4 +1,6 @@
 import { AfterViewInit, Component } from '@angular/core';
+import { faBackspace, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-virtual-keyboard',
@@ -7,6 +9,8 @@ import { AfterViewInit, Component } from '@angular/core';
 })
 export class VirtualKeyboardComponent implements AfterViewInit {
   inputValue: string = '';
+  faBackspace = faBackspace;
+
 
 
 
@@ -22,6 +26,12 @@ export class VirtualKeyboardComponent implements AfterViewInit {
   clearInput() {
     this.inputValue = '';
   }
+  backspace() {
+    this.inputValue = this.inputValue.slice(0, -1);
+  }
+  spacer(){
+    this.inputValue = this.inputValue + " ";
+  }
 
   acessarElemento() {
     const containerKeyboard: HTMLElement | null = document.querySelector<HTMLElement>(".container-input");
@@ -35,8 +45,6 @@ export class VirtualKeyboardComponent implements AfterViewInit {
       controllerToggle.style.width = "36px";
       controllerLayers.style.border = "none";
       controllerLayers.style.boxShadow = "0 1px 5px rgba(0,0,0,0.4)";
-      controllerLayers.style.marginRight = "0";
-      console.log(controller);
     }
   }
 

@@ -14,6 +14,7 @@
       <button (click)="addToInput('8')">8</button>
       <button (click)="addToInput('9')">9</button>
       <button (click)="addToInput('0')">0</button>
+      <button class="backspace" (click)="backspace()"><fa-icon [icon]="faBackspace" size="lg"></fa-icon></button>
     </div>
     <div class="row">
       <button (click)="addToInput('q')">Q</button>
@@ -28,6 +29,7 @@
       <button (click)="addToInput('p')">P</button>
     </div>
     <div class="row">
+      <button (click)="clearInput()">Limpar</button>
       <button (click)="addToInput('a')">A</button>
       <button (click)="addToInput('s')">S</button>
       <button (click)="addToInput('d')">D</button>
@@ -48,7 +50,9 @@
       <button (click)="addToInput('m')">M</button>
     </div>
     <div class="row">
-      <button (click)="clearInput()">Clear</button>
+      <button class="space" (click)="spacer()">
+        <img src="../../../assets/space_bar.svg">
+      </button>
     </div>
   </div>
 </div>
