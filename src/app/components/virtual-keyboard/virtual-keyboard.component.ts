@@ -35,6 +35,7 @@ export class VirtualKeyboardComponent implements AfterViewInit {
       controllerToggle.style.width = "36px";
       controllerLayers.style.border = "none";
       controllerLayers.style.boxShadow = "0 1px 5px rgba(0,0,0,0.4)";
+      controllerLayers.style.marginRight = "0";
       console.log(controller);
     }
   }

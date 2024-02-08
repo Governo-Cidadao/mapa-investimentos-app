@@ -1,13 +1,12 @@
 .container-keyboad{
-    position: absolute;
-    z-index: 3000;
-    left: 50%;
-    top: 10%;
+    position: relative;
+    z-index: 1000;
+    margin: auto;
+    top: 2%;
     display: flex;
-    justify-content: center;
     flex-direction: column;
     align-items: center;
-
+    justify-content: center;
 }
 .keyboard {
     margin-top: 5px;
@@ -15,7 +14,6 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 100%;
 }
 
 .row button {
