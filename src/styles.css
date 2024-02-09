@@ -2,3 +2,20 @@
     margin: 0;
     padding: 0;
 }
+
+.leaflet-popup-content {
+    width: 150px;
+    font-family: 12px;
+}
+
+.img-popup {
+    width: 150px;
+    height: 150px;
+}
+
+.btn-link {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}

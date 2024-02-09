@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
+import { faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
 import L, { LatLngExpression } from 'leaflet';
 import { MapService } from '../../service/map.service';
-import { faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-controller',
@@ -23,7 +23,7 @@ export class ControllerComponent implements AfterViewInit {
 
   }
 
-  movimentacao(long: number, lat: number, movimentation: boolean) {
+  movimentacao(long: number, lat: number, movimentation: boolean): void {
     if (movimentation) {
       this.intervalId = setInterval(() => {
         this.mover(long, lat);
@@ -34,26 +34,29 @@ export class ControllerComponent implements AfterViewInit {
     }
   }
 
-  mover(long: number, lat: number) {
+  mover(long: number, lat: number): void {
     let centro = this.map?.getCenter();
     if (centro) {
       let novo_centro = L.latLng(centro.lat + lat, centro.lng + long);
       this.map?.setView(novo_centro);
     }
   }
-  centralizarMapa() {
+
+  centralizarMapa(): void {
     const initialCoordinates: LatLngExpression = [-5.844865661075205, -36.56710587301696]
     const initialZoomLevel = 8.8;
     this.map?.setView(initialCoordinates, initialZoomLevel);
   }
-  zoomIn() {
+
+  zoomIn(): void {
     this.map?.zoomIn(0.5)
   }
-  zoomOut() {
+
+  zoomOut(): void {
     this.map?.zoomOut(0.5)
   }
 
-  arrastarController() {
+  arrastarController(): void {
     const itemArrastavel: HTMLElement | null = document.querySelector<HTMLElement>(".arrastavel");
     let divArrastavel: HTMLElement | null;
     let difX = 0;
@@ -104,5 +107,4 @@ export class ControllerComponent implements AfterViewInit {
       }
     });
   }
-  
 }

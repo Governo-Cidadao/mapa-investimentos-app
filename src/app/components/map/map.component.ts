@@ -23,7 +23,7 @@ export class MapComponent {
     ],
     zoom: 8,
     attributionControl: false,
-    zoomControl: true,
+    zoomControl: false,
     minZoom: 8,
     maxZoom: 12,
     zoomSnap: 0.10,
@@ -44,7 +44,7 @@ export class MapComponent {
     this.initializeMiniMap(map);
     this.getBrazilLayer();
     this.getTerritorioLayer();
-    this.getInvestimentosLayer("");
+    this.getInvestimentosLayer();
     this.mapService.setMap(map);
   }
 
@@ -94,11 +94,12 @@ export class MapComponent {
       });
   }
 
-  getInvestimentosLayer(filter: string): void {
-    this.investimentoService.findAll(filter).subscribe(
+  getInvestimentosLayer(): void {
+    this.investimentoService.findAllSlim().subscribe(
       response => {
         const invest = new L.GeoJSON(response, {
-          pointToLayer: FeatureUtils.setCustomMark
+          pointToLayer: FeatureUtils.setCustomMark,
+          onEachFeature: FeatureUtils.customBindPopup
         }).addTo(this.layers);
         this.layerControl.addOverlay(invest, "Investimentos");
       });

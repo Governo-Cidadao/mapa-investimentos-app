@@ -5,14 +5,18 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class InvestimentosService {
-  private baseURL: string = environment.apiBaseURL + "/api/v1/investimentos"
+	private baseURL: string = environment.apiBaseURL + "/api/v1/investimentos"
 
-  constructor(private http: HttpClient) { }
+	constructor(private http: HttpClient) { }
 
-  findAll(filter: string): Observable<GeoJsonObject> {
-    return this.http.get<GeoJsonObject>(this.baseURL, { params: { 'filter': filter } });
-  }
+	findAll(filter: string): Observable<GeoJsonObject> {
+		return this.http.get<GeoJsonObject>(this.baseURL, { params: { 'filter': filter } });
+	}
+
+	findAllSlim(): Observable<GeoJsonObject> {
+		return this.http.get<GeoJsonObject>(`${this.baseURL}/slim`);
+	}
 }

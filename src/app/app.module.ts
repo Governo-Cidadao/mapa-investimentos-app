@@ -11,6 +11,8 @@ import { MapComponent } from './components/map/map.component';
 import { ControllerComponent } from './components/controller/controller.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { VirtualKeyboardComponent } from './components/virtual-keyboard/virtual-keyboard.component';
+import { ModalComponent } from './components/modal/modal.component';
+import { CarouselComponent } from './components/carousel/carousel.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { VirtualKeyboardComponent } from './components/virtual-keyboard/virtual-
     HeaderComponent,
     ControllerComponent,
     VirtualKeyboardComponent,
+    ModalComponent,
+    CarouselComponent,
   ],
   imports: [
     BrowserModule,
