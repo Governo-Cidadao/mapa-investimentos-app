@@ -13,13 +13,13 @@ import { MapService } from '../../service/map.service';
 })
 export class MapComponent {
   INITIAL_COORD = [-5.844865661075205, -36.56710587301696];
-  baseMapURl: string = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+  baseMapURl: string = 'http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}';
   layers: L.LayerGroup = new L.LayerGroup();
   layerControl!: L.Control.Layers;
 
   options = {
     layers: [
-      tileLayer(this.baseMapURl, { maxZoom: 12, attribution: '© contributors: @joabesamuell, @_ig0rdias, @celilimaf, @rodmatth, @jonas.ssilva' })
+      tileLayer(this.baseMapURl, { maxZoom: 12, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '© contributors: @joabesamuell, @_ig0rdias, @celilimaf, @rodmatth, @jonas.ssilva' })
     ],
     zoom: 8,
     attributionControl: false,
@@ -55,6 +55,7 @@ export class MapComponent {
   initializeMiniMap(map: Map): void {
     const baseMinimap = L.tileLayer(this.baseMapURl, {
       maxZoom: 30,
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
     })
 
     new MiniMap(baseMinimap, {

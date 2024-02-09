@@ -1,8 +1,8 @@
 .container-keyboad{
     position: relative;
-    z-index: 1000;
+    z-index: 450;
     margin: auto;
-    top: 2%;
+    top: 120px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -60,4 +60,9 @@ input[type="text"] {
 
 .space img{
     width: 20px;
+}
+.botoesPersonalizadoA{
+    display: none;
+    z-index: 4000;
+    position: absolute;
 }
