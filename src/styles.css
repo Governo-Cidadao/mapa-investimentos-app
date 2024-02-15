@@ -70,3 +70,8 @@
     margin-top: 2px;
     margin-bottom: 2px;
 }
+
+.leaflet-control-minimap 
+{
+    border: solid 3px white;
+}
