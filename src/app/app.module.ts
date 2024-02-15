@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { VirtualKeyboardComponent } from './components/virtual-keyboard/virtual-keyboard.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { CarouselComponent } from './components/carousel/carousel.component';
+import { ControllLayerCustonComponent } from './components/controll-layer-custon/controll-layer-custon.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CarouselComponent } from './components/carousel/carousel.component';
     VirtualKeyboardComponent,
     ModalComponent,
     CarouselComponent,
+    ControllLayerCustonComponent,
   ],
   imports: [
     BrowserModule,

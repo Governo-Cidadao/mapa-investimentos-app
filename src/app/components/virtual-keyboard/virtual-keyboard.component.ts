@@ -10,13 +10,10 @@ import { faBackspace, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 export class VirtualKeyboardComponent implements AfterViewInit {
   inputValue: string = '';
   faBackspace = faBackspace;
-
-
-
+  private timer: any;
 
   ngAfterViewInit(): void {
-    this.acessarElemento()
-    this.iniciarEventos()
+    this.inicializarEventosTeclado()
   }
 
   addToInput(value: string) {
@@ -29,26 +26,12 @@ export class VirtualKeyboardComponent implements AfterViewInit {
   backspace() {
     this.inputValue = this.inputValue.slice(0, -1);
   }
-  spacer(){
+  spacer() {
     this.inputValue = this.inputValue + " ";
   }
 
-  acessarElemento() {
-    const containerKeyboard: HTMLElement | null = document.querySelector<HTMLElement>(".container-input");
-    const controller: HTMLElement | null = document.querySelector<HTMLElement>(".leaflet-top.leaflet-right");
-    const controllerToggle: HTMLElement | null = document.querySelector<HTMLElement>(".leaflet-control-layers-toggle");
-    const controllerLayers: HTMLElement | null = document.querySelector<HTMLElement>(".leaflet-control-layers");
-    if (containerKeyboard && controller && controllerToggle && controllerLayers) {
-      containerKeyboard.appendChild(controller);
-      controller.style.position = "static";
-      controllerToggle.style.height = "36px";
-      controllerToggle.style.width = "36px";
-      controllerLayers.style.border = "none";
-      controllerLayers.style.boxShadow = "0 1px 5px rgba(0,0,0,0.4)";
-    }
-  }
 
-  iniciarEventos() {
+  inicializarEventosTeclado() {
     const elementoTeclado: HTMLElement | null = document.querySelector<HTMLElement>(".keyboard");
     if(elementoTeclado)
     elementoTeclado.style.display = "none";
@@ -65,8 +48,26 @@ export class VirtualKeyboardComponent implements AfterViewInit {
         }
       }
     });
+
+    // botoesPersonalizadoA
   }
 
+  mostrarOpcoes(letter: string) {
+    const botoesPersonalizadoA: HTMLElement | null = document.querySelector<HTMLElement>(".botoesPersonalizadoA");
+    if (botoesPersonalizadoA) {
+      botoesPersonalizadoA.style.display = "flex";
+    }
 
+
+  }
+  startTimer(letter: string) {
+    this.timer = setTimeout(() => {
+      this.mostrarOpcoes(letter);
+    }, 500);
+  }
+  clearTimer() {
+    clearTimeout(this.timer);
+  }
 
 }
+
