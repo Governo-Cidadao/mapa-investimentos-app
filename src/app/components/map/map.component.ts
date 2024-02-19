@@ -16,6 +16,7 @@ export class MapComponent {
   baseMapURl: string = 'http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}';
   layers: L.LayerGroup = new L.LayerGroup();
   layerControl!: L.Control.Layers;
+  invest : any
 
   options = {
     layers: [
@@ -98,11 +99,53 @@ export class MapComponent {
   getInvestimentosLayer(): void {
     this.investimentoService.findAllSlim().subscribe(
       response => {
-        const invest = new L.GeoJSON(response, {
+        const investLayer = L.layerGroup();
+        this.invest = new L.GeoJSON(response, {
           pointToLayer: FeatureUtils.setCustomMark,
           onEachFeature: FeatureUtils.customBindPopup
         }).addTo(this.layers);
-        this.layerControl.addOverlay(invest, "Investimentos");
+        this.layerControl.addOverlay(this.invest, "Investimentos");
+
+        //  Filtragem ultizando o campo de pesquisa
+        const filterInput = document.querySelector('.filtro-pesquisa') as HTMLInputElement;
+        filterInput.addEventListener('input', () => {
+          const filterValue = filterInput.value.toLowerCase();
+          this.invest.eachLayer((layer: any) => {
+            const properties = layer.feature.properties;
+            console.log(properties)
+            if (layer._icon != null) {
+              layer._icon.style.display = 'None';
+              if (contem_municipio_tipologia_territorio_categoria_invest(layer, filterValue)) {
+                layer._icon.style.display = 'block';
+              }
+            }
+            else if (layer._path != null) {
+              layer._path.style.display = 'None';
+              if (contem_municipio_tipologia_territorio_categoria_invest(layer, filterValue)) {
+                layer._path.style.display = 'block';
+              }
+            }
+          });
+
+        });
+
       });
+    
+    function eventosdefiltragem(){
+      
+    }
+
+    function contem_municipio_tipologia_territorio_categoria_invest(layer: any, filterValue: string) {
+      const estabelecimento = layer.feature.properties.estabelecimento;
+      const municipio = layer.feature.properties.municipio
+      const territorio = layer.feature.properties.territorio
+      const tipoDeInvestimento = layer.feature.properties.tipoDeInvestimento
+      const categoriaMapeamento = layer.feature.properties.categoriaMapeamento
+      console.log(estabelecimento)
+
+      return municipio.toLowerCase().includes(filterValue) || territorio.toLowerCase().includes(filterValue)
+        || tipoDeInvestimento.toLowerCase().includes(filterValue) || categoriaMapeamento.toLowerCase().includes(filterValue)
+        || estabelecimento.toLowerCase().includes(filterValue);
+    }
   }
 }
