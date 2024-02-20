@@ -23,7 +23,6 @@ export class ControllLayerCustonComponent implements AfterViewInit {
 
 
     if (divControl && imageButton && containerFiltro && layerPadrao && sectionLayer && controlePersonalizado && containerLabel && layerPadrao) {
-      // console.log("tenho tudo isso")
 
       containerFiltro.appendChild(divControl)
       divControl.appendChild(imageButton)

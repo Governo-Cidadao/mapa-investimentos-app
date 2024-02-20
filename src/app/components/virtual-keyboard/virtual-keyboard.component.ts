@@ -5,7 +5,7 @@ import { faBackspace, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-virtual-keyboard',
   templateUrl: './virtual-keyboard.component.html',
-  styleUrl: './virtual-keyboard.component.css'
+  styleUrls: ['./virtual-keyboard.component.css']
 })
 export class VirtualKeyboardComponent implements AfterViewInit {
   inputValue: string = '';
@@ -18,23 +18,29 @@ export class VirtualKeyboardComponent implements AfterViewInit {
 
   addToInput(value: string) {
     this.inputValue += value;
+    this.triggerInputChange()
   }
 
   clearInput() {
     this.inputValue = '';
+    this.triggerInputChange()
+
   }
   backspace() {
     this.inputValue = this.inputValue.slice(0, -1);
+    this.triggerInputChange()
   }
   spacer() {
     this.inputValue = this.inputValue + " ";
+    this.triggerInputChange()
+
   }
 
 
   inicializarEventosTeclado() {
     const elementoTeclado: HTMLElement | null = document.querySelector<HTMLElement>(".keyboard");
-    if(elementoTeclado)
-    elementoTeclado.style.display = "none";
+    if (elementoTeclado)
+      elementoTeclado.style.display = "none";
     document.addEventListener("click", function (event) {
       const elementoPesquisa: HTMLElement | null = document.querySelector<HTMLElement>(".filtro-pesquisa");
       if (elementoTeclado && event.target instanceof Node && elementoPesquisa) {
@@ -69,5 +75,12 @@ export class VirtualKeyboardComponent implements AfterViewInit {
     clearTimeout(this.timer);
   }
 
+  triggerInputChange() {
+    const inputElement: HTMLInputElement | null = document.querySelector('.filtro-pesquisa');
+    if (inputElement) {
+      inputElement.value = this.inputValue; 
+      inputElement.dispatchEvent(new Event('input')); 
+    }
+  }
 }
 

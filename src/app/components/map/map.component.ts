@@ -117,7 +117,6 @@ export class MapComponent {
       const filterValue = filterInput.value.toLowerCase();
       this.invest.eachLayer((layer: any) => {
         const properties = layer.feature.properties;
-        console.log(properties)
         if (layer._icon != null) {
           layer._icon.style.display = 'None';
           if (contem_municipio_tipologia_territorio_categoria_invest(layer, filterValue)) {
@@ -140,7 +139,6 @@ export class MapComponent {
       const territorio = layer.feature.properties.territorio
       const tipoDeInvestimento = layer.feature.properties.tipoDeInvestimento
       const categoriaMapeamento = layer.feature.properties.categoriaMapeamento
-      console.log(estabelecimento)
 
       return municipio.toLowerCase().includes(filterValue) || territorio.toLowerCase().includes(filterValue)
         || tipoDeInvestimento.toLowerCase().includes(filterValue) || categoriaMapeamento.toLowerCase().includes(filterValue)
