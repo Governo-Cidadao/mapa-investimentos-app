@@ -12,6 +12,11 @@ import { HtmlUtil } from '../../utils/html.utils';
 export class ModalComponent {
 
   public static closeModal() {
+    const modalInfo = document.querySelector<HTMLElement>('.informacao');
+
+    if(modalInfo)
+      modalInfo.remove();
+
     ModalComponent.showElements(true);
   }
 
@@ -28,7 +33,7 @@ export class ModalComponent {
     const layers = document.querySelector<HTMLElement>('.container_buton_personalizado');
     const controller = document.querySelector<HTMLElement>('.container-controller');
     const minimap = document.querySelector<HTMLElement>('.leaflet-control-minimap');
-    const modal = document.querySelector<HTMLElement>('.informacao');
+    const modal = document.querySelector<HTMLElement>('.container-modal');
 
     filtro!.style.display = 'none';
     layers!.style.display = 'none';

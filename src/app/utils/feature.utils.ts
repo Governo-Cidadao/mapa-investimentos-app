@@ -1,6 +1,7 @@
 import { Feature } from "geojson";
 import L, { LatLng, Layer } from "leaflet";
 import { ModalComponent } from "../components/modal/modal.component";
+import { HtmlUtil } from "./html.utils";
 
 export class FeatureUtils {
 
@@ -87,13 +88,15 @@ export class FeatureUtils {
         content.innerHTML = FeatureUtils.basicInfoInvestHtml(pathPhoto, numPhotos, estabelecimento, municipio);
 
         const modal = ModalComponent.modalInfo(feature, area, codEstab);
-        content.appendChild(modal);
+
+        HtmlUtil.moveElement(modal, content);
 
         layer.bindPopup(content).on('popupopen', () => {
             const button = content.querySelector('.btn-link');
             if (button) {
                 button.addEventListener('click', () => {
                     ModalComponent.showModal(`${area}_${codEstab}_informacao`, true, numPhotos);
+                    HtmlUtil.moveElement(modal, "container-modal");
                 });
             }
         });
