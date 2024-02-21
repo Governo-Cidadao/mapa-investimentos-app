@@ -1,0 +1,29 @@
+.container-modal{
+    z-index: 500;
+    width: 600px;
+    height: 450px;
+    padding-bottom: 30px;
+    position: fixed;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    animation: fadeInOut 0.7s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

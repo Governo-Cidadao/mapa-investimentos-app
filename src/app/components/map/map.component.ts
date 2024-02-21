@@ -1,11 +1,11 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import L, { Map, latLng, tileLayer } from 'leaflet';
 import { MiniMap } from 'leaflet-control-mini-map';
 import { EstadoService } from '../../service/estado.service';
 import { InvestimentosService } from '../../service/investimentos.service';
+import { MapService } from '../../service/map.service';
 import { TerritorioService } from '../../service/territorio.service';
 import { FeatureUtils } from '../../utils/feature.utils';
-import { MapService } from '../../service/map.service';
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -16,7 +16,7 @@ export class MapComponent {
   baseMapURl: string = 'http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}';
   layers: L.LayerGroup = new L.LayerGroup();
   layerControl!: L.Control.Layers;
-  invest: any
+  invest: any;
 
   options = {
     layers: [
@@ -33,13 +33,11 @@ export class MapComponent {
     center: latLng(this.INITIAL_COORD[0], this.INITIAL_COORD[1])
   };
 
-
-
   constructor(
     private mapService: MapService,
     private estadoService: EstadoService,
     private territorioService: TerritorioService,
-    private investimentoService: InvestimentosService
+    private investimentoService: InvestimentosService,
   ) { }
 
   onMapReady(map: Map): void {
@@ -102,7 +100,6 @@ export class MapComponent {
   getInvestimentosLayer(): void {
     this.investimentoService.findAllSlim().subscribe(
       response => {
-        const investLayer = L.layerGroup();
         this.invest = new L.GeoJSON(response, {
           pointToLayer: FeatureUtils.setCustomMark,
           onEachFeature: FeatureUtils.customBindPopup
@@ -116,14 +113,13 @@ export class MapComponent {
     filterInput.addEventListener('input', () => {
       const filterValue = filterInput.value.toLowerCase();
       this.invest.eachLayer((layer: any) => {
-        const properties = layer.feature.properties;
-        if (layer._icon != null) {
+        if (layer._icon) {
           layer._icon.style.display = 'None';
           if (contem_municipio_tipologia_territorio_categoria_invest(layer, filterValue)) {
             layer._icon.style.display = 'block';
           }
         }
-        else if (layer._path != null) {
+        else if (layer._path) {
           layer._path.style.display = 'None';
           if (contem_municipio_tipologia_territorio_categoria_invest(layer, filterValue)) {
             layer._path.style.display = 'block';

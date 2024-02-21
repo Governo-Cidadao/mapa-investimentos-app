@@ -1,10 +1,8 @@
 import { Feature } from "geojson";
 import L, { LatLng, Layer } from "leaflet";
-import { FormatNumber } from "./format.number.utils";
 import { ModalComponent } from "../components/modal/modal.component";
 
 export class FeatureUtils {
-    modal: ModalComponent = new ModalComponent();
 
     public static setCustomMark(feature: Feature, latLng: LatLng): L.Marker {
         const BASE_CAMINHO_IMAGEM = 'assets/icones_novos';
@@ -76,8 +74,7 @@ export class FeatureUtils {
     }
 
     public static customBindPopup(feature: Feature, layer: Layer): void {
-        if(!feature.properties)
-            return;
+        if (!feature.properties) return;
 
         const area = feature.properties['areaMapeamento'];
         const numPhotos = feature.properties['quantidadeFoto'];
@@ -86,12 +83,20 @@ export class FeatureUtils {
         const estabelecimento = feature.properties['estabelecimento'];
         const municipio = feature.properties['municipio'];
 
-        let html = FeatureUtils.basicInfoInvestHtml(pathPhoto, numPhotos, estabelecimento, municipio);
-        let modal = document.querySelector<HTMLElement>(".container-modal");
+        const content = document.createElement('div');
+        content.innerHTML = FeatureUtils.basicInfoInvestHtml(pathPhoto, numPhotos, estabelecimento, municipio);
 
-        html += `<button class="btn-link" onclick="modal.showModal('${area}_${codEstab}_informacao',true,${numPhotos})"><a>Mais informações</a> </button></div>`
-        modal!.innerHTML = FeatureUtils.modalInfo(feature, estabelecimento, codEstab);
-        layer.bindPopup(html);
+        const modal = ModalComponent.modalInfo(feature, area, codEstab);
+        content.appendChild(modal);
+
+        layer.bindPopup(content).on('popupopen', () => {
+            const button = content.querySelector('.btn-link');
+            if (button) {
+                button.addEventListener('click', () => {
+                    ModalComponent.showModal(`${area}_${codEstab}_informacao`, true, numPhotos);
+                });
+            }
+        });
     }
 
     public static basicInfoInvestHtml(pathPhoto: string, numPhotos: number, estabelecimento: string, municipio: string): string {
@@ -100,33 +105,11 @@ export class FeatureUtils {
         if (numPhotos > 0) {
             html += `<img src="${pathPhoto}/foto_0.jpg" class="img-popup">`;
         }
-
         html += '<p><strong> Estabelecimento: ' + estabelecimento + '</strong></p>';
         html += '<p><strong> Município: ' + municipio + '</strong></p>';
 
-        return html
-    }
+        html += '<button class="btn-link"><a>Mais informações</a></button>';
 
-    public static modalInfo(feature: Feature, estabelecimento: string, codEstab: number): string {
-        if (!feature.properties)
-            return "";
-
-        let html = `<div class="informacao" id='${estabelecimento}_${codEstab}_informacao' style='display:none'>`
-        html += '<p><strong> Estabelecimento </strong></p> <p>' + feature.properties['estabelecimento'] + '</p> <br>'
-        html += '<p><strong> Orgão </strong></p> <p>' + feature.properties['orgao'] + '</p> <br>'
-        html += '<p><strong> Município </strong></p> <p>' + feature.properties['municipio'] + '</p> <br>'
-        html += '<p><strong> Território </strong></p> <p>' + feature.properties['territorio'] + '</p> <br>'
-        html += '<p><strong> Área </strong></p> <p>' + feature.properties["areaMapeamento"] + '</p> <br>'
-
-        if (feature.properties["somatorioBens"] != 0)
-            html += '<p><strong> Total Investimento bens </strong></p> <p>R$ ' + FormatNumber.formatIntegerNumber(feature.properties["somatorioBens"]) + '</p> <br>';
-        if (feature.properties["somatorioObras"] != 0)
-            html += '<p><strong> Total Investimento obras </strong></p> <p>R$ ' + FormatNumber.formatIntegerNumber(feature.properties["somatorioObras"]) + '</p> <br>';
-        if (feature.properties["somatorioSubprojetos"] != 0)
-            html += '<p><strong> Total Investimento subprojetos </strong></p> <p>R$ ' + FormatNumber.formatIntegerNumber(feature.properties["somatorioSubprojetos"]) + '</p>';
-        html += '<div class="close-icon-info"><i (click)="ModalComponent.closeModal(ver_informacoes = true)" class="fa-solid fa-x"></i></div>'
-        html += '</div>'
-
-        return html
+        return html;
     }
 }

@@ -1,3 +1,7 @@
 .container-header {
     display: flex;
 }
+
+.container-header img {
+    width: 100%;
+}
