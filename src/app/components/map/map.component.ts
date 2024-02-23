@@ -6,6 +6,8 @@ import { InvestimentosService } from '../../service/investimentos.service';
 import { MapService } from '../../service/map.service';
 import { TerritorioService } from '../../service/territorio.service';
 import { FeatureUtils } from '../../utils/feature.utils';
+import 'leaflet.control.layers.tree';
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -51,7 +53,32 @@ export class MapComponent {
   }
 
   initializeLayerControl(map: Map): void {
-    this.layerControl = L.control.layers({}).addTo(map);
+    var osm = L. tileLayer(this.baseMapURl, { maxZoom: 12, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '© contributors: @joabesamuell, @_ig0rdias, @celilimaf, @rodmatth, @jonas.ssilva' })
+
+    var baseTree = {
+      label: 'BaseLayers',
+      noShow: true,
+      children: [
+        {
+          label: 'mapa',
+          layer: osm,
+          children: [
+            { label: 'B&W', name: 'mapa' },
+          ]
+        },
+      ]
+    };
+
+    var ctl = L.control.layers.tree(baseTree, undefined,
+      {
+        namedToggle: true,
+        // collapseAll: 'Collapse all',
+        // expandAll: 'Expand all',
+        collapsed: false,
+      });
+
+    this.layerControl = ctl.addTo(map).collapseTree().expandSelected();
+
   }
 
   initializeMiniMap(map: Map): void {
