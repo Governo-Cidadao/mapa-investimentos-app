@@ -102,13 +102,11 @@ export class HtmlUtil {
       button.id = `botao_avancar_${area}_${codEstab}`;
       button.addEventListener('click', () => CarouselComponent.moveForward(`${area}_${codEstab}`, numPhotos!));
       icon.classList.add('fa-solid', 'fa-chevron-right');
-      icon.innerHTML = ">";
     } else {
       button.id = `botao_voltar_${area}_${codEstab}`;
       button.addEventListener('click', () => CarouselComponent.moveBack(button, `${area}_${codEstab}`));
       button.style.visibility = 'hidden';
       icon.classList.add('fa-solid', 'fa-chevron-left');
-      icon.innerHTML = "<";
     }
 
     button.appendChild(icon);
