@@ -2,6 +2,7 @@ import { Feature } from "geojson";
 import L, { LatLng, Layer } from "leaflet";
 import { ModalComponent } from "../components/modal/modal.component";
 import { HtmlUtil } from "./html.utils";
+import { CarouselComponent } from "../components/carousel/carousel.component";
 
 export class FeatureUtils {
 
@@ -87,16 +88,26 @@ export class FeatureUtils {
         const content = document.createElement('div');
         content.innerHTML = FeatureUtils.basicInfoInvestHtml(pathPhoto, numPhotos, estabelecimento, municipio);
 
-        const modal = ModalComponent.modalInfo(feature, area, codEstab);
-
+        const modal = ModalComponent.modalInfo(feature);
         HtmlUtil.moveElement(modal, content);
 
+        const carousel = CarouselComponent.getCarousel(pathPhoto, area, numPhotos, codEstab);
+        HtmlUtil.moveElement(carousel, content);
+
         layer.bindPopup(content).on('popupopen', () => {
-            const button = content.querySelector('.btn-link');
-            if (button) {
-                button.addEventListener('click', () => {
-                    ModalComponent.showModal(`${area}_${codEstab}_informacao`, true, numPhotos);
+            const buttonLink = content.querySelector('.btn-link');
+            if (buttonLink) {
+                buttonLink.addEventListener('click', () => {
+                    ModalComponent.showModal(`${area}_${codEstab}_informacao`);
                     HtmlUtil.moveElement(modal, "container-modal");
+                });
+            }
+
+            const buttonPhotos = content.querySelector<HTMLElement>('.btn-fotos');
+            if (buttonPhotos) {
+                buttonPhotos.addEventListener('click', () => {
+                    CarouselComponent.showCarousel(`${area}_${codEstab}_fotos`);
+                    HtmlUtil.moveElement(carousel, "outer-carousel-container");
                 });
             }
         });
@@ -105,11 +116,14 @@ export class FeatureUtils {
     public static basicInfoInvestHtml(pathPhoto: string, numPhotos: number, estabelecimento: string, municipio: string): string {
         let html = '';
 
-        if (numPhotos > 0) {
+        if (numPhotos > 0)
             html += `<img src="${pathPhoto}/foto_0.jpg" class="img-popup">`;
-        }
+
         html += '<p><strong> Estabelecimento: ' + estabelecimento + '</strong></p>';
         html += '<p><strong> Município: ' + municipio + '</strong></p>';
+
+        if (numPhotos > 0)
+            html += `<button class="btn-fotos"><a>Ver fotos</a></button>`
 
         html += '<button class="btn-link"><a>Mais informações</a></button>';
 

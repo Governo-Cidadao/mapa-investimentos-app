@@ -1,5 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
-import { faBackspace, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faBackspace } from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -44,8 +44,8 @@ export class VirtualKeyboardComponent implements AfterViewInit {
     document.addEventListener("click", function (event) {
       const elementoPesquisa: HTMLElement | null = document.querySelector<HTMLElement>(".filtro-pesquisa");
       if (elementoTeclado && event.target instanceof Node && elementoPesquisa) {
-        var clicouFora = !elementoTeclado.contains(event.target);
-        var clicouInput = elementoPesquisa.contains(event.target);
+        let clicouFora = !elementoTeclado.contains(event.target);
+        let clicouInput = elementoPesquisa.contains(event.target);
         if (clicouFora) {
           elementoTeclado.style.display = "none";
         }
@@ -78,8 +78,8 @@ export class VirtualKeyboardComponent implements AfterViewInit {
   triggerInputChange() {
     const inputElement: HTMLInputElement | null = document.querySelector('.filtro-pesquisa');
     if (inputElement) {
-      inputElement.value = this.inputValue; 
-      inputElement.dispatchEvent(new Event('input')); 
+      inputElement.value = this.inputValue;
+      inputElement.dispatchEvent(new Event('input'));
     }
   }
 }
