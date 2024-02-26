@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Feature } from 'geojson';
 import { FormatNumber } from '../../utils/format.number.utils';
-import { CarouselComponent } from '../carousel/carousel.component';
 import { HtmlUtil } from '../../utils/html.utils';
 
 @Component({
@@ -11,49 +10,27 @@ import { HtmlUtil } from '../../utils/html.utils';
 })
 export class ModalComponent {
 
-  public static closeModal() {
-    const modalInfo = document.querySelector<HTMLElement>('.informacao');
-
-    if(modalInfo)
-      modalInfo.remove();
-
-    ModalComponent.showElements(true);
-  }
-
-  public static showModal(id: string, showInfos: boolean = false, numPhotos: number = 0) {
-    const info = document.querySelector<HTMLElement>('.close-icon-info');
-    info!.style.display = 'block';
-
-    ModalComponent.showElements(false);
-    CarouselComponent.showCarousel(id);
-  }
-
-  public static showElements(option: boolean) {
-    const filtro = document.querySelector<HTMLElement>('.container-input');
-    const layers = document.querySelector<HTMLElement>('.container_buton_personalizado');
-    const controller = document.querySelector<HTMLElement>('.container-controller');
-    const minimap = document.querySelector<HTMLElement>('.leaflet-control-minimap');
+  public static showModal(id: string) {
+    const info = document.getElementById(id);
     const modal = document.querySelector<HTMLElement>('.container-modal');
-
-    filtro!.style.display = 'none';
-    layers!.style.display = 'none';
-    controller!.style.display = 'none';
-    minimap!.style.display = 'none';
-    modal!.style.display = 'flex';
-
-    if (option) {
-      filtro!.style.display = 'flex';
-      layers!.style.display = 'flex';
-      controller!.style.display = 'flex';
-      minimap!.style.display = 'block';
-      modal!.style.display = 'none';
-    }
-
+    info!.style.display = 'flex';
+    HtmlUtil.showElements(false, modal!);
   }
 
-  public static modalInfo(feature: Feature, areaMapeamento: string, codEstab: number): HTMLElement {
+  public static closeModal(id: string) {
+    const info = document.getElementById(id);
+    const modal = document.querySelector<HTMLElement>('.container-modal');
+    info!.style.display = 'none';
+    HtmlUtil.showElements(true, modal!);
+  }
+
+  public static modalInfo(feature: Feature): HTMLElement {
     if (!feature.properties)
-      throw new Error("Propriedades da camada nulas");
+      throw new Error("Propriedade de camada nula");
+
+    const properties = feature.properties;
+    const areaMapeamento = properties['areaMapeamento'];
+    const codEstab = properties['codigoEstabelecimento'];
 
     const fragment = document.createDocumentFragment();
     const div = document.createElement('div');
@@ -61,7 +38,6 @@ export class ModalComponent {
     div.id = `${areaMapeamento}_${codEstab}_informacao`;
     div.style.display = 'none';
 
-    const properties = feature.properties;
 
     fragment.appendChild(HtmlUtil.createElementWithContent('p', '<strong> Estabelecimento </strong>', properties['estabelecimento']));
     fragment.appendChild(HtmlUtil.createElementWithContent('br'));
@@ -93,7 +69,7 @@ export class ModalComponent {
     const closeIcon = document.createElement('div');
     closeIcon.classList.add('close-icon-info');
     closeIcon.textContent = 'x';
-    closeIcon.addEventListener('click', () => ModalComponent.closeModal());
+    closeIcon.addEventListener('click', () => ModalComponent.closeModal(div.id));
 
     fragment.appendChild(closeIcon);
     div.appendChild(fragment);
