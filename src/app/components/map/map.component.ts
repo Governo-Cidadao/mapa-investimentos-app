@@ -21,7 +21,7 @@ export class MapComponent implements AfterViewInit {
   invest: any;
   investimentos_estrutura: any
   ctl: any
-  vetorMaker:any = []
+  vetorMaker: any = []
 
   options = {
     layers: [
@@ -58,7 +58,7 @@ export class MapComponent implements AfterViewInit {
     this.getTerritorioLayer();
     this.getInvestimentosLayer();
     this.mapService.setMap(map);
-    
+
   }
 
   initializeLayerControl(map: Map): void {
@@ -140,12 +140,65 @@ export class MapComponent implements AfterViewInit {
       response => {
         let investimentos = response;
         let features = (investimentos as any).features;
+        let areaMapeamento: any = [];
+        
+
         for (let i = 0; i < features.length; i++) {
+          let areaIndex = areaMapeamento.findIndex((element: any) =>
+            element.areaMapeamento === features[i].properties.areaMapeamento
+          );
+
+          if (areaIndex === -1) {
+            areaMapeamento.push({
+              areaMapeamento: features[i].properties.areaMapeamento,
+              tipologias: [{
+                tipologiaMapeamento: features[i].properties.tipologiaMapeamento,
+                categorias: [{
+                  categoriaMapeamento: features[i].properties.categoriaMapeamento,
+                  elementos: [features[i]]
+                }]
+              }]
+            });
+          } else {
+            let tipologiaIndex = areaMapeamento[areaIndex].tipologias.findIndex((element: any) =>
+              element.tipologiaMapeamento === features[i].properties.tipologiaMapeamento
+            );
+
+            if (tipologiaIndex === -1) {
+              // Se não encontrarmos uma tipologia igual dentro da mesma área de mapeamento, adicionamos um novo objeto ao array de tipologias
+              areaMapeamento[areaIndex].tipologias.push({
+                tipologiaMapeamento: features[i].properties.tipologiaMapeamento,
+                categorias: [{
+                  categoriaMapeamento: features[i].properties.categoriaMapeamento,
+                  elementos: [features[i]]
+                }]
+              });
+            } else {
+              let categoriaIndex = areaMapeamento[areaIndex].tipologias[tipologiaIndex].categorias.findIndex((element: any) =>
+                element.categoriaMapeamento === features[i].properties.categoriaMapeamento
+              );
+
+              if (categoriaIndex === -1) {
+                // Se não encontrarmos uma categoria igual dentro da mesma tipologia, adicionamos um novo objeto ao array de categorias
+                areaMapeamento[areaIndex].tipologias[tipologiaIndex].categorias.push({
+                  categoriaMapeamento: features[i].properties.categoriaMapeamento,
+                  elementos: [features[i]]
+                });
+              } else {
+                // Se encontrarmos uma categoria igual dentro da mesma tipologia, adicionamos este elemento aos elementos existentes
+                areaMapeamento[areaIndex].tipologias[tipologiaIndex].categorias[categoriaIndex].elementos.push(features[i]);
+              }
+            }
+          }
+
+
+
           let label = features[i].properties.investimentoMapeamento;
           let cordenadas = features[i].geometry.coordinates;
           let type = features[i].geometry.type;
           let newElement;
-  
+
+
           if (type == "Point") {
             let myIcon = criarIconPersonalizado(features[i]);
             const marker = L.marker([cordenadas[1], cordenadas[0]], { icon: myIcon });
@@ -157,32 +210,83 @@ export class MapComponent implements AfterViewInit {
             this.vetorMaker.push(objetoMarcadorFeature);
             newElement = { label: label, layer: marker };
           }
-  
-          if (!this.investimentos_estrutura) {
-            this.investimentos_estrutura = {
-              label: 'investimentos',
-              selectAllCheckbox: true,
-              children: [
-                {
-                  label: 'desenvolvimento regional',
-                  selectAllCheckbox: true,
-                  children: [
-                    {
-                      label: 'agua',
-                      selectAllCheckbox: true,
-                      children: []
-                    },
-                  ]
-                }
-              ]
-            };
-          }
-          this.investimentos_estrutura.children[0].children[0].children.push(newElement);
+
+
+
+          // if (!this.investimentos_estrutura) {
+          //   this.investimentos_estrutura = {
+          //     label: 'investimentos',
+          //     selectAllCheckbox: true,
+          //     children: [
+          //       {
+          //         label: 'areaMapeamento',
+          //         selectAllCheckbox: true,
+          //         children: [
+          //           {
+          //             label: 'tipologiaMapemanto',
+          //             selectAllCheckbox: true,
+          //             children: [
+          //               {
+          //                 label: 'categoria',
+          //                 selectAllCheckbox: true,
+          //                 children: []
+          //               },
+          //             ]
+          //           },
+          //         ]
+          //       }
+          //     ]
+          //   };
+          // }
+          // this.investimentos_estrutura.children[0].children[0].children.push(newElement);
         }
+
+
+        this.investimentos_estrutura = {
+          label: 'investimentos',
+          selectAllCheckbox: true,
+          children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
+        };
+
+        areaMapeamento.forEach((area: any) => {
+          let areaNode = {
+            label: area.areaMapeamento,
+            selectAllCheckbox: true,
+            children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
+
+          };
+
+          area.tipologias.forEach((tipologia: any) => {
+            let tipologiaNode = {
+              label: tipologia.tipologiaMapeamento,
+              selectAllCheckbox: true,
+              children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
+
+            };
+            areaNode.children.push(tipologiaNode);
+  
+
+            tipologia.categorias.forEach((categoria: any) => {
+              let categoriaNode = {
+                label: categoria.categoriaMapeamento,
+                selectAllCheckbox: true,
+                children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
+
+              };
+              tipologiaNode.children.push(categoriaNode);
+            })
+          })
+
+
+
+          this.investimentos_estrutura.children.push(areaNode);
+        })
+
+
         this.ctl.setOverlayTree(this.investimentos_estrutura).collapseTree(true).expandSelected(true);
         controlarEventosFiltragem();
       });
-  
+
     function criarIconPersonalizado(feature: any) {
       const BASE_CAMINHO_IMAGEM = 'assets/icones_novos';
       const nameIcon = FeatureUtils.getIconPath(feature, BASE_CAMINHO_IMAGEM);
@@ -196,7 +300,7 @@ export class MapComponent implements AfterViewInit {
       });
       return myIcon;
     }
-  
+
     function controlarEventosFiltragem() {
       const parentElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('.leaflet-layerstree-header.leaflet-layerstree-header-pointer');
       parentElements.forEach(parentElement => {
@@ -208,7 +312,7 @@ export class MapComponent implements AfterViewInit {
             child.style.display = 'none';
           }
         }
-  
+
         parentElement.addEventListener('click', () => {
           const children: HTMLCollection = parentElement.parentElement!.children;
           for (let i = 0; i < children.length; i++) {
@@ -224,10 +328,10 @@ export class MapComponent implements AfterViewInit {
         });
       });
     }
-  
+
     this.filtrarCamadasPorInput();
   }
-  
+
   filtrarCamadasPorInput() {
     const filterInput = document.querySelector('.filtro-pesquisa') as HTMLInputElement;
     filterInput.addEventListener('input', () => {
@@ -246,17 +350,17 @@ export class MapComponent implements AfterViewInit {
         }
       }
     });
-  
+
     function contemMunicipioTipologiaTerritorioCategoriaInvest(layer: any, filterValue: string) {
       const estabelecimento = layer.properties.estabelecimento;
       const municipio = layer.properties.municipio;
       const territorio = layer.properties.territorio;
       const tipoDeInvestimento = layer.properties.tipoDeInvestimento;
       const categoriaMapeamento = layer.properties.categoriaMapeamento;
-  
+
       return municipio.toLowerCase().includes(filterValue) || territorio.toLowerCase().includes(filterValue)
         || tipoDeInvestimento.toLowerCase().includes(filterValue) || categoriaMapeamento.toLowerCase().includes(filterValue)
         || estabelecimento.toLowerCase().includes(filterValue);
     }
-  }  
+  }
 }
