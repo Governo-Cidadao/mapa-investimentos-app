@@ -47,7 +47,7 @@ export class MapComponent {
     this.getTerritorioLayer();
     this.getInvestimentosLayer();
     this.mapService.setMap(map);
-    this.filtrarCamadasPorInput()
+    this.filterLayersByInput()
   }
 
   initializeLayerControl(map: Map): void {
@@ -105,31 +105,30 @@ export class MapComponent {
           onEachFeature: FeatureUtils.customBindPopup
         }).addTo(this.layers);
         this.layerControl.addOverlay(this.invest, "Investimentos");
-
       });
   }
-  filtrarCamadasPorInput() {
+
+  filterLayersByInput(): void {
     const filterInput = document.querySelector('.filtro-pesquisa') as HTMLInputElement;
     filterInput.addEventListener('input', () => {
       const filterValue = filterInput.value.toLowerCase();
       this.invest.eachLayer((layer: any) => {
         if (layer._icon) {
           layer._icon.style.display = 'None';
-          if (contem_municipio_tipologia_territorio_categoria_invest(layer, filterValue)) {
+          if (multiPartyFilter(layer, filterValue)) {
             layer._icon.style.display = 'block';
           }
         }
         else if (layer._path) {
           layer._path.style.display = 'None';
-          if (contem_municipio_tipologia_territorio_categoria_invest(layer, filterValue)) {
+          if (multiPartyFilter(layer, filterValue)) {
             layer._path.style.display = 'block';
           }
         }
       });
-
     });
 
-    function contem_municipio_tipologia_territorio_categoria_invest(layer: any, filterValue: string) {
+    function multiPartyFilter(layer: any, filterValue: string) {
       const estabelecimento = layer.feature.properties.estabelecimento;
       const municipio = layer.feature.properties.municipio
       const territorio = layer.feature.properties.territorio
