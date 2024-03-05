@@ -45,9 +45,6 @@ export class MapComponent implements AfterViewInit {
     private investimentoService: InvestimentosService,
   ) { }
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.filtrarCamadasPorInput();
-    }, 5000);
 
   }
 
@@ -58,6 +55,7 @@ export class MapComponent implements AfterViewInit {
     this.getTerritorioLayer();
     this.getInvestimentosLayer();
     this.mapService.setMap(map);
+    this.filtrarCamadasPorInput();
 
   }
 
@@ -125,61 +123,18 @@ export class MapComponent implements AfterViewInit {
       response => {
         let investimentos = response;
         let features = (investimentos as any).features;
-        let areaMapeamento: any = [];
+        let investimentosMapeamento = filtarInvestimentos(features)
 
-
-        for (let i = 0; i < features.length; i++) {
-          let areaIndex = areaMapeamento.findIndex((element: any) =>
-            element.areaMapeamento === features[i].properties.areaMapeamento
-          );
-
-          if (areaIndex === -1) {
-            areaMapeamento.push({
-              areaMapeamento: features[i].properties.areaMapeamento,
-              tipologias: [{
-                tipologiaMapeamento: features[i].properties.tipologiaMapeamento,
-                categorias: [{
-                  categoriaMapeamento: features[i].properties.categoriaMapeamento,
-                  elementos: [features[i]]
-                }]
-              }]
-            });
-          } else {
-            let tipologiaIndex = areaMapeamento[areaIndex].tipologias.findIndex((element: any) =>
-              element.tipologiaMapeamento === features[i].properties.tipologiaMapeamento
-            );
-
-            if (tipologiaIndex === -1) {
-              areaMapeamento[areaIndex].tipologias.push({
-                tipologiaMapeamento: features[i].properties.tipologiaMapeamento,
-                categorias: [{
-                  categoriaMapeamento: features[i].properties.categoriaMapeamento,
-                  elementos: [features[i]]
-                }]
-              });
-            } else {
-              let categoriaIndex = areaMapeamento[areaIndex].tipologias[tipologiaIndex].categorias.findIndex((element: any) =>
-                element.categoriaMapeamento === features[i].properties.categoriaMapeamento
-              );
-
-              if (categoriaIndex === -1) {
-                areaMapeamento[areaIndex].tipologias[tipologiaIndex].categorias.push({
-                  categoriaMapeamento: features[i].properties.categoriaMapeamento,
-                  elementos: [features[i]]
-                });
-              } else {
-                areaMapeamento[areaIndex].tipologias[tipologiaIndex].categorias[categoriaIndex].elementos.push(features[i]);
-              }
-            }
-          }
-        }
         this.investimentos_estrutura = {
           label: ' INVESTIMENTOS',
           selectAllCheckbox: 'true',
           children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
         };
 
-        areaMapeamento.forEach((area: any) => {
+        
+
+
+        investimentosMapeamento.forEach((area: any) => {
           let areaNode = {
             label: ' ' + area.areaMapeamento,
             selectAllCheckbox: true,
@@ -189,7 +144,7 @@ export class MapComponent implements AfterViewInit {
 
           area.tipologias.forEach((tipologia: any) => {
             let tipologiaNode = {
-              label:' ' + tipologia.tipologiaMapeamento,
+              label: ' ' + tipologia.tipologiaMapeamento,
               selectAllCheckbox: true,
               children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
 
@@ -212,7 +167,6 @@ export class MapComponent implements AfterViewInit {
                 let newElement: any;
 
                 if (type == "Point") {
-                  // console.log(features[i])
                   let myIcon = criarIconPersonalizado(elemento);
                   const marker = L.marker([cordenadas[1], cordenadas[0]], { icon: myIcon });
                   FeatureUtils.customBindPopup(elemento, marker);
@@ -229,19 +183,65 @@ export class MapComponent implements AfterViewInit {
 
             })
           })
-
-
-
           this.investimentos_estrutura.children.push(areaNode);
         })
-        console.log(this.investimentos_estrutura)
-
-
         // this.ctl.setOverlayTree(this.investimentos_estrutura).collapseTree(true).expandSelected(true);
         this.ctl.setOverlayTree(this.investimentos_estrutura)
 
         controlarEventosFiltragem();
       });
+
+
+    function filtarInvestimentos(features: any) {
+      let investimentosMapeamento: any = [];
+      for (let i = 0; i < features.length; i++) {
+        let areaIndex = investimentosMapeamento.findIndex((element: any) =>
+          element.areaMapeamento === features[i].properties.areaMapeamento
+        );
+        console.log(areaIndex)
+
+        if (areaIndex === -1) {
+          investimentosMapeamento.push({
+            areaMapeamento: features[i].properties.areaMapeamento,
+            tipologias: [{
+              tipologiaMapeamento: features[i].properties.tipologiaMapeamento,
+              categorias: [{
+                categoriaMapeamento: features[i].properties.categoriaMapeamento,
+                elementos: [features[i]]
+              }]
+            }]
+          });
+        } else {
+          let tipologiaIndex = investimentosMapeamento[areaIndex].tipologias.findIndex((element: any) =>
+            element.tipologiaMapeamento === features[i].properties.tipologiaMapeamento
+          );
+
+          if (tipologiaIndex === -1) {
+            investimentosMapeamento[areaIndex].tipologias.push({
+              tipologiaMapeamento: features[i].properties.tipologiaMapeamento,
+              categorias: [{
+                categoriaMapeamento: features[i].properties.categoriaMapeamento,
+                elementos: [features[i]]
+              }]
+            });
+          } else {
+            let categoriaIndex = investimentosMapeamento[areaIndex].tipologias[tipologiaIndex].categorias.findIndex((element: any) =>
+              element.categoriaMapeamento === features[i].properties.categoriaMapeamento
+            );
+
+            if (categoriaIndex === -1) {
+              investimentosMapeamento[areaIndex].tipologias[tipologiaIndex].categorias.push({
+                categoriaMapeamento: features[i].properties.categoriaMapeamento,
+                elementos: [features[i]]
+              });
+            } else {
+              investimentosMapeamento[areaIndex].tipologias[tipologiaIndex].categorias[categoriaIndex].elementos.push(features[i]);
+            }
+          }
+        }
+      }
+      return investimentosMapeamento
+    }
 
     function criarIconPersonalizado(feature: any) {
       const BASE_CAMINHO_IMAGEM = 'assets/icones_novos';
@@ -260,7 +260,6 @@ export class MapComponent implements AfterViewInit {
     function controlarEventosFiltragem() {
       const parentElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('.leaflet-layerstree-header.leaflet-layerstree-header-pointer');
       const elementoTeclado: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-children");
-      console.log(elementoTeclado)
 
       if (elementoTeclado)
         elementoTeclado.forEach(elemento => {
