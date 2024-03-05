@@ -66,25 +66,10 @@ export class MapComponent implements AfterViewInit {
 
     var baseTree = {
       label: 'BaseLayers',
-      noShow: true,
-      children: [
-        {
-          label: 'mapa',
-          layer: osm,
-          children: [
-            { label: 'B&W', name: 'mapa' },
-          ]
-        },
-      ]
     };
 
-    this.ctl = L.control.layers.tree(baseTree, undefined,
-      {
-        // namedToggle: true,
-        // collapseAll: 'Collapse all',
-        // expandAll: 'Expand all',
-        // collapsed: false,
-      });
+    this.ctl = L.control.layers.tree(baseTree, undefined, {
+    });
 
     this.layerControl = this.ctl.addTo(map).collapseTree().expandSelected();
 
@@ -141,7 +126,7 @@ export class MapComponent implements AfterViewInit {
         let investimentos = response;
         let features = (investimentos as any).features;
         let areaMapeamento: any = [];
-        
+
 
         for (let i = 0; i < features.length; i++) {
           let areaIndex = areaMapeamento.findIndex((element: any) =>
@@ -165,7 +150,6 @@ export class MapComponent implements AfterViewInit {
             );
 
             if (tipologiaIndex === -1) {
-              // Se não encontrarmos uma tipologia igual dentro da mesma área de mapeamento, adicionamos um novo objeto ao array de tipologias
               areaMapeamento[areaIndex].tipologias.push({
                 tipologiaMapeamento: features[i].properties.tipologiaMapeamento,
                 categorias: [{
@@ -179,78 +163,25 @@ export class MapComponent implements AfterViewInit {
               );
 
               if (categoriaIndex === -1) {
-                // Se não encontrarmos uma categoria igual dentro da mesma tipologia, adicionamos um novo objeto ao array de categorias
                 areaMapeamento[areaIndex].tipologias[tipologiaIndex].categorias.push({
                   categoriaMapeamento: features[i].properties.categoriaMapeamento,
                   elementos: [features[i]]
                 });
               } else {
-                // Se encontrarmos uma categoria igual dentro da mesma tipologia, adicionamos este elemento aos elementos existentes
                 areaMapeamento[areaIndex].tipologias[tipologiaIndex].categorias[categoriaIndex].elementos.push(features[i]);
               }
             }
           }
-
-
-
-          let label = features[i].properties.investimentoMapeamento;
-          let cordenadas = features[i].geometry.coordinates;
-          let type = features[i].geometry.type;
-          let newElement;
-
-
-          if (type == "Point") {
-            let myIcon = criarIconPersonalizado(features[i]);
-            const marker = L.marker([cordenadas[1], cordenadas[0]], { icon: myIcon });
-            FeatureUtils.customBindPopup(features[i], marker);
-            const objetoMarcadorFeature = {
-              marcador: marker,
-              feature: features[i]
-            };
-            this.vetorMaker.push(objetoMarcadorFeature);
-            newElement = { label: label, layer: marker };
-          }
-
-
-
-          // if (!this.investimentos_estrutura) {
-          //   this.investimentos_estrutura = {
-          //     label: 'investimentos',
-          //     selectAllCheckbox: true,
-          //     children: [
-          //       {
-          //         label: 'areaMapeamento',
-          //         selectAllCheckbox: true,
-          //         children: [
-          //           {
-          //             label: 'tipologiaMapemanto',
-          //             selectAllCheckbox: true,
-          //             children: [
-          //               {
-          //                 label: 'categoria',
-          //                 selectAllCheckbox: true,
-          //                 children: []
-          //               },
-          //             ]
-          //           },
-          //         ]
-          //       }
-          //     ]
-          //   };
-          // }
-          // this.investimentos_estrutura.children[0].children[0].children.push(newElement);
         }
-
-
         this.investimentos_estrutura = {
-          label: 'investimentos',
-          selectAllCheckbox: true,
+          label: ' INVESTIMENTOS',
+          selectAllCheckbox: 'true',
           children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
         };
 
         areaMapeamento.forEach((area: any) => {
           let areaNode = {
-            label: area.areaMapeamento,
+            label: ' ' + area.areaMapeamento,
             selectAllCheckbox: true,
             children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
 
@@ -258,22 +189,44 @@ export class MapComponent implements AfterViewInit {
 
           area.tipologias.forEach((tipologia: any) => {
             let tipologiaNode = {
-              label: tipologia.tipologiaMapeamento,
+              label:' ' + tipologia.tipologiaMapeamento,
               selectAllCheckbox: true,
               children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
 
             };
             areaNode.children.push(tipologiaNode);
-  
+
 
             tipologia.categorias.forEach((categoria: any) => {
               let categoriaNode = {
-                label: categoria.categoriaMapeamento,
+                label: ' ' + categoria.categoriaMapeamento,
                 selectAllCheckbox: true,
                 children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
 
               };
-              tipologiaNode.children.push(categoriaNode);
+
+              categoria.elementos.forEach((elemento: any) => {
+                let label = ' ' + elemento.properties.categoriaMapeamento
+                let cordenadas = elemento.geometry.coordinates;
+                let type = elemento.geometry.type;
+                let newElement: any;
+
+                if (type == "Point") {
+                  // console.log(features[i])
+                  let myIcon = criarIconPersonalizado(elemento);
+                  const marker = L.marker([cordenadas[1], cordenadas[0]], { icon: myIcon });
+                  FeatureUtils.customBindPopup(elemento, marker);
+                  const objetoMarcadorFeature = {
+                    marcador: marker,
+                    feature: elemento
+                  };
+                  this.vetorMaker.push(objetoMarcadorFeature);
+                  newElement = { label: label, layer: marker };
+                }
+                tipologiaNode.children.push(newElement);
+
+              })
+
             })
           })
 
@@ -281,9 +234,12 @@ export class MapComponent implements AfterViewInit {
 
           this.investimentos_estrutura.children.push(areaNode);
         })
+        console.log(this.investimentos_estrutura)
 
 
-        this.ctl.setOverlayTree(this.investimentos_estrutura).collapseTree(true).expandSelected(true);
+        // this.ctl.setOverlayTree(this.investimentos_estrutura).collapseTree(true).expandSelected(true);
+        this.ctl.setOverlayTree(this.investimentos_estrutura)
+
         controlarEventosFiltragem();
       });
 
@@ -303,8 +259,25 @@ export class MapComponent implements AfterViewInit {
 
     function controlarEventosFiltragem() {
       const parentElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('.leaflet-layerstree-header.leaflet-layerstree-header-pointer');
+      const elementoTeclado: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-children");
+      console.log(elementoTeclado)
+
+      if (elementoTeclado)
+        elementoTeclado.forEach(elemento => {
+          elemento.style.marginLeft = '15px'
+        })
+
+
+      parentElements.forEach(elemento => {
+        let span = elemento.querySelector('span')
+        if (span) {
+          span.style.display = 'none'
+        }
+
+      })
+
+
       parentElements.forEach(parentElement => {
-        // Oculta todos os filhos inicialmente
         const children: HTMLCollection = parentElement.parentElement!.children;
         for (let i = 0; i < children.length; i++) {
           const child: HTMLElement = children[i] as HTMLElement;
