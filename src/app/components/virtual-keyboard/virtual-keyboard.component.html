@@ -31,14 +31,8 @@
     </div>
     <div class="row">
       <button (click)="clearInput()">Limpar</button>
-      <button (click)="addToInput('a')" (mousedown)="startTimer('a')" (mouseup)="clearTimer()" (mouseleave)="clearTimer()">
-        <div class="botoesPersonalizadoA">
-          <button (click)="addToInput('á'); $event.stopPropagation()">Á</button>
-          <button (click)="addToInput('â'); $event.stopPropagation()">Â</button>
-          <button (click)="addToInput('ã'); $event.stopPropagation()">Ã</button>
-        </div>  
-        A
-      </button>      
+      <button (click)="addToInput('a')">A</button>
+
       <button (click)="addToInput('s')">S</button>
       <button (click)="addToInput('d')">D</button>
       <button (click)="addToInput('f')">F</button>
