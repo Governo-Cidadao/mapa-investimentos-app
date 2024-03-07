@@ -112,4 +112,48 @@ export class HtmlUtil {
     button.appendChild(icon);
     return button;
   }
+
+
+  public static marginAndHideTreeHeader(): void {
+    const headerController: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('.leaflet-layerstree-header.leaflet-layerstree-header-pointer');
+    const childrensController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-children");
+
+    if (childrensController){
+      childrensController.forEach(elemento => {
+        elemento.style.marginLeft = '15px'
+      })
+    }
+
+    headerController.forEach(elemento => {
+      let span = elemento.querySelector('span')
+      if (span)
+        span.style.display = 'none'
+    })
+
+    headerController.forEach(element => {
+      const children: HTMLCollection = element.parentElement!.children;
+      for (let i = 0; i < children.length; i++) {
+        const child: HTMLElement = children[i] as HTMLElement;
+        if (child !== element) {
+          child.style.display = 'none';
+        }
+      }
+
+      HtmlUtil.addHideElementEvent(element);
+    })
+  }
+
+  public static addHideElementEvent(element: HTMLElement) {
+    element.addEventListener('click', () => {
+      const children: HTMLCollection = element.parentElement!.children;
+      for (let i = 0; i < children.length; i++) {
+        const child: HTMLElement = children[i] as HTMLElement;
+        if (child !== element)
+          if (child.style.display === 'none')
+            child.style.display = 'block';
+          else
+            child.style.display = 'none';
+      }
+    })
+  }
 }

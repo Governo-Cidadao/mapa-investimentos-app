@@ -21,6 +21,23 @@ export class FeatureUtils {
         return L.marker(latLng, { icon: myIcon });
     }
 
+    public static createMarker(elemento: any, label: string, vetorMaker: any) {
+        const coord = elemento.geometry.coordinates;
+        const type = elemento.geometry.type;
+        let structureElement: any;
+        if (type == "Point") {
+            const marker = FeatureUtils.setCustomMark(elemento, L.latLng(coord[1], coord[0]));
+            FeatureUtils.customBindPopup(elemento, marker);
+            const objectMarkFeature = {
+                marcador: marker,
+                feature: elemento
+            };
+            vetorMaker.push(objectMarkFeature);
+            structureElement = { label: label, layer: marker };
+        }
+        return structureElement
+    }
+
     public static getIconPath(feature: Feature, basePath: string): string {
         if (!feature.properties)
             return "";
