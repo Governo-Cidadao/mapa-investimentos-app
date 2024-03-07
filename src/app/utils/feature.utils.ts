@@ -78,9 +78,9 @@ export class FeatureUtils {
             'CENTRO ADMINISTRATIVO': '/Centro administrativo.svg',
             'POSTO INTEGRADO DE FISCALIZAÇÃO': '/POSTO DE FISCALIZAÇÃO.svg',
             'SINE': '/Sine.svg',
-            'ENFRENTAMENTO DA COVID-19': '/Enfrentamento da covid-19.svg',
+            'ENFRENTAMENTO DA COVID -19': '/Enfrentamento da covid-19.svg',
             'HOSPITAL DA MULHER': '/hospital regional.svg',
-            'HOSPITAL REGIONAL ': '/hospital regional.svg',
+            'HOSPITAL REGIONAL': '/hospital regional.svg',
             'LABORATÓRIO DE ANATOMOCITOPATOLOGIA': '/Laboratório.svg',
             'MATERNIDADES': '/hospital regional.svg',
             'REDE METROPOLITANA DE DADOS': '/Rede metropolitana de dados.svg',
@@ -112,6 +112,8 @@ export class FeatureUtils {
         HtmlUtil.moveElement(carousel, content);
 
         layer.bindPopup(content).on('popupopen', () => {
+            if(feature.properties)
+                console.log(feature.properties['categoriaMapeamento']);
             const buttonLink = content.querySelector('.btn-link');
             if (buttonLink) {
                 buttonLink.addEventListener('click', () => {

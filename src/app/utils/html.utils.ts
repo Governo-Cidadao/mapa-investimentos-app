@@ -77,7 +77,6 @@ export class HtmlUtil {
       containerDot.appendChild(dotSlider);
     }
 
-
     return [containerImgs, containerDot];
   }
 
@@ -125,7 +124,7 @@ export class HtmlUtil {
     }
 
     headerController.forEach(elemento => {
-      let span = elemento.querySelector('span')
+      let span = elemento.querySelector('span');
       if (span)
         span.style.display = 'none'
     })
