@@ -55,7 +55,6 @@ export class MapComponent implements AfterViewInit {
     this.getTerritorioLayer();
     this.getInvestimentosLayer();
     this.mapService.setMap(map);
-    this.filtrarCamadasPorInput();
 
   }
 
@@ -121,7 +120,6 @@ export class MapComponent implements AfterViewInit {
   getInvestimentosLayer(): void {
     this.investimentoService.findAllSlim().subscribe(
       response => {
-
         let investimentos = response;
         let features = (investimentos as any).features;
         let investimentosMapeamento = this.filtarInvestimentos(features)
@@ -266,7 +264,6 @@ export class MapComponent implements AfterViewInit {
         };
         areaNode.children.push(tipologiaNode);
 
-
         tipologia.categorias.forEach((categoria: any) => {
           let categoriaNode = {
             label: ' ' + categoria.categoriaMapeamento,
@@ -277,22 +274,8 @@ export class MapComponent implements AfterViewInit {
 
           categoria.elementos.forEach((elemento: any) => {
             let label = ' ' + elemento.properties.categoriaMapeamento
-            let cordenadas = elemento.geometry.coordinates;
-            let type = elemento.geometry.type;
-            let newElement: any;
-
-            if (type == "Point") {
-              let myIcon = this.criarIconPersonalizado(elemento);
-              const marker = L.marker([cordenadas[1], cordenadas[0]], { icon: myIcon });
-              FeatureUtils.customBindPopup(elemento, marker);
-              const objetoMarcadorFeature = {
-                marcador: marker,
-                feature: elemento
-              };
-              this.vetorMaker.push(objetoMarcadorFeature);
-              newElement = { label: label, layer: marker };
-            }
-            tipologiaNode.children.push(newElement);
+            let marcador = this.construirMarcador(elemento, label)
+            tipologiaNode.children.push(marcador);
 
           })
 
@@ -300,6 +283,25 @@ export class MapComponent implements AfterViewInit {
       })
       this.investimentos_estrutura.children.push(areaNode);
     })
+
+
+  }
+  construirMarcador(elemento:any, label :String){
+    let cordenadas = elemento.geometry.coordinates;
+    let type = elemento.geometry.type;
+    let estruturaElemento: any;
+    if (type == "Point") {
+            let myIcon = this.criarIconPersonalizado(elemento);
+            let marker = L.marker([cordenadas[1], cordenadas[0]], { icon: myIcon });
+            FeatureUtils.customBindPopup(elemento, marker);
+            const objetoMarcadorFeature = {
+              marcador: marker,
+              feature: elemento
+            };
+            this.vetorMaker.push(objetoMarcadorFeature);
+            estruturaElemento = { label: label, layer: marker };
+          }
+      return estruturaElemento
   }
 
   filtrarCamadasPorInput() {
