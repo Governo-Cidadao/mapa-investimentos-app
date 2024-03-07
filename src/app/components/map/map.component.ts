@@ -18,9 +18,8 @@ export class MapComponent {
   INITIAL_COORD = [-5.844865661075205, -36.56710587301696];
   baseMapURl: string = 'http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}';
   layers: L.LayerGroup = new L.LayerGroup();
-  layerControl!: L.Control.Layers;
   invest: any;
-  controler: any;
+  layerController: any;
   vetorMaker: any = [];
 
   structureInvest = {
@@ -62,16 +61,8 @@ export class MapComponent {
   }
 
   initializeLayerControl(map: Map): void {
-    const baseTree = {
-      label: 'BaseLayers',
-    };
-
-    this.controler = L.control.layers.tree(baseTree, undefined, {
-    });
-
-    this.layerControl = this.controler.addTo(map).collapseTree().expandSelected();
-
-    this.controler.addTo(map).collapseTree().expandSelected();
+    this.layerController = L.control.layers.tree();
+    this.layerController.addTo(map);
   }
 
   initializeMiniMap(map: Map): void {
@@ -125,7 +116,7 @@ export class MapComponent {
 
         // função responsavel por criar a estrutura requirida pela biblioteca layerTree para ser adicionada ao controler
         TreeUtil.populateTree(investimentosMapeamento, this.structureInvest, this.vetorMaker);
-        this.controler.setOverlayTree(this.structureInvest)
+        this.layerController.setOverlayTree(this.structureInvest);
 
         HtmlUtil.marginAndHideTreeHeader();
       });
