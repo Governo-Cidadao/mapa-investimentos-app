@@ -32,12 +32,12 @@
 .control-layers_personalizado {
     position: absolute;
     display: none;
-    margin-left: 510px;
+    margin-left: 520px;
     top: 9px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
     background: #fff;
     border-radius: 5px;
-    padding: 7px;
+    padding: 8px;
     z-index: 800;
     overflow-y: auto;
     max-width: 300px;
@@ -183,4 +183,9 @@
     color: white;
     font-size: 15px;
     padding: 1px 6px;
+}
+
+.leaflet-layerstree-header-pointer{
+    display: flex;
+    justify-content: space-between;
 }

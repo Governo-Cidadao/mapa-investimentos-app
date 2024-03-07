@@ -77,6 +77,7 @@ export class HtmlUtil {
       containerDot.appendChild(dotSlider);
     }
 
+
     return [containerImgs, containerDot];
   }
 
@@ -116,6 +117,13 @@ export class HtmlUtil {
   public static marginAndHideTreeHeader(): void {
     const headerController: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('.leaflet-layerstree-header.leaflet-layerstree-header-pointer');
     const childrensController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-children");
+    const spanController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-nevershow");
+
+    if (spanController){
+      spanController.forEach(elemento =>{
+        elemento.style.display = 'none'
+      })
+    }
 
     if (childrensController){
       childrensController.forEach(elemento => {
@@ -124,9 +132,13 @@ export class HtmlUtil {
     }
 
     headerController.forEach(elemento => {
-      let span = elemento.querySelector('span');
+
+      let buttonExpand = this.createButonnExpandCuston(elemento)
+      elemento.appendChild(buttonExpand)
+      let span = elemento.querySelector('span')
       if (span)
         span.style.display = 'none'
+
     })
 
     headerController.forEach(element => {
@@ -140,6 +152,39 @@ export class HtmlUtil {
 
       HtmlUtil.addHideElementEvent(element);
     })
+  }
+
+  public static createButonnExpandCuston(element:any) {
+    const buttonExpand =  document.createElement('div')
+      buttonExpand.classList.add('buton-expand')
+      buttonExpand.textContent = '+';
+      buttonExpand.style.display = 'inline-block';
+      buttonExpand.style.backgroundColor = 'buttonface';
+      buttonExpand.style.color = 'black';
+      buttonExpand.style.padding = '1px';
+      buttonExpand.style.width = '19px';
+      buttonExpand.style.height = '17px';
+      buttonExpand.style.border = 'solid 1px black';
+      buttonExpand.style.borderRadius = '3px';
+      buttonExpand.style.cursor = 'pointer';
+      buttonExpand.style.textAlign = 'center';
+      buttonExpand.style.marginLeft = '5px';
+      buttonExpand.style.marginBottom = '1px';
+
+
+      this.addButonExpandEvent(buttonExpand)
+
+      return buttonExpand
+  }
+
+  public static addButonExpandEvent(buttonExpand:HTMLElement){
+    buttonExpand.addEventListener('click', function() {
+      if (this.textContent == '+'){
+        this.textContent = '-';
+      }
+      else this.textContent = '+' 
+    });
+    
   }
 
   public static addHideElementEvent(element: HTMLElement) {

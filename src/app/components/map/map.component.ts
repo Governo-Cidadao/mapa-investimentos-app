@@ -23,7 +23,7 @@ export class MapComponent {
   vetorMaker: any = [];
 
   structureInvest = {
-    label: 'Investimentos',
+    label: ' Investimentos',
     selectAllCheckbox: 'true',
     children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
   };
