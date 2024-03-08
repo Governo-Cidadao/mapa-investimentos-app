@@ -119,13 +119,13 @@ export class HtmlUtil {
     const childrensController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-children");
     const spanController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-nevershow");
 
-    if (spanController){
-      spanController.forEach(elemento =>{
+    if (spanController) {
+      spanController.forEach(elemento => {
         elemento.style.display = 'none'
       })
     }
 
-    if (childrensController){
+    if (childrensController) {
       childrensController.forEach(elemento => {
         elemento.style.marginLeft = '15px'
       })
@@ -154,37 +154,37 @@ export class HtmlUtil {
     })
   }
 
-  public static createButonnExpandCuston(element:any) {
-    const buttonExpand =  document.createElement('div')
-      buttonExpand.classList.add('buton-expand')
-      buttonExpand.textContent = '+';
-      buttonExpand.style.display = 'inline-block';
-      buttonExpand.style.backgroundColor = 'buttonface';
-      buttonExpand.style.color = 'black';
-      buttonExpand.style.padding = '1px';
-      buttonExpand.style.width = '19px';
-      buttonExpand.style.height = '17px';
-      buttonExpand.style.border = 'solid 1px black';
-      buttonExpand.style.borderRadius = '3px';
-      buttonExpand.style.cursor = 'pointer';
-      buttonExpand.style.textAlign = 'center';
-      buttonExpand.style.marginLeft = '5px';
-      buttonExpand.style.marginBottom = '1px';
+  public static createButonnExpandCuston(element: any) {
+    const buttonExpand = document.createElement('div')
+    buttonExpand.classList.add('buton-expand')
+    buttonExpand.textContent = '+';
+    buttonExpand.style.display = 'inline-block';
+    buttonExpand.style.backgroundColor = 'buttonface';
+    buttonExpand.style.color = 'black';
+    buttonExpand.style.padding = '1px';
+    buttonExpand.style.width = '19px';
+    buttonExpand.style.height = '17px';
+    buttonExpand.style.border = 'solid 1px black';
+    buttonExpand.style.borderRadius = '3px';
+    buttonExpand.style.cursor = 'pointer';
+    buttonExpand.style.textAlign = 'center';
+    buttonExpand.style.marginLeft = '5px';
+    buttonExpand.style.marginBottom = '1px';
 
 
-      this.addButonExpandEvent(buttonExpand)
+    this.addButonExpandEvent(buttonExpand)
 
-      return buttonExpand
+    return buttonExpand
   }
 
-  public static addButonExpandEvent(buttonExpand:HTMLElement){
-    buttonExpand.addEventListener('click', function() {
-      if (this.textContent == '+'){
+  public static addButonExpandEvent(buttonExpand: HTMLElement) {
+    buttonExpand.addEventListener('click', function () {
+      if (this.textContent == '+') {
         this.textContent = '-';
       }
-      else this.textContent = '+' 
+      else this.textContent = '+'
     });
-    
+
   }
 
   public static addHideElementEvent(element: HTMLElement) {

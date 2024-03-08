@@ -52,7 +52,7 @@ export class FeatureUtils {
             'BARRAGEM': '/Barragem.svg',
             'CENTRO DE COMERCIALIZAÇÃO': '/Unidade de comercializacao.svg',
             'CENTRO DE FORMAÇÃO': '/Centro de formação.svg',
-            'CENTRO DE MANEJO ': '/Centros de manejo.svg',
+            'CENTRO DE MANEJO': '/Centros de manejo.svg',
             'COMERCIALIZAÇÃO': '/comercializacao 1.svg',
             'DIBA': '/RECUPERAÇÃO ESTRUTURAL DO DIBA.svg',
             'EQUIPAMENTO CULTURAL': '/Cultura.svg',
@@ -112,8 +112,6 @@ export class FeatureUtils {
         HtmlUtil.moveElement(carousel, content);
 
         layer.bindPopup(content).on('popupopen', () => {
-            if(feature.properties)
-                console.log(feature.properties['categoriaMapeamento']);
             const buttonLink = content.querySelector('.btn-link');
             if (buttonLink) {
                 buttonLink.addEventListener('click', () => {

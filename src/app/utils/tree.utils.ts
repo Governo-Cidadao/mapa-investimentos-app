@@ -89,4 +89,9 @@ export class TreeUtil {
         }
         return investimentosMapeamento
     }
+
+    public static clickCheckboxTree() {
+        const input = document.querySelector<HTMLInputElement>('.leaflet-layerstree-sel-all-checkbox');
+        input!.click();
+    }
 }

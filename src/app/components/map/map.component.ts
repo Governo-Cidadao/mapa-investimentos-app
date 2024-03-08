@@ -119,6 +119,7 @@ export class MapComponent {
         this.layerController.setOverlayTree(this.structureInvest);
 
         HtmlUtil.marginAndHideTreeHeader();
+        TreeUtil.clickCheckboxTree();
       });
 
     this.filterLayersByInput();
