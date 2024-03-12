@@ -55,24 +55,6 @@ export class VirtualKeyboardComponent implements AfterViewInit {
       }
     });
 
-    // botoesPersonalizadoA
-  }
-
-  mostrarOpcoes(letter: string) {
-    const botoesPersonalizadoA: HTMLElement | null = document.querySelector<HTMLElement>(".botoesPersonalizadoA");
-    if (botoesPersonalizadoA) {
-      botoesPersonalizadoA.style.display = "flex";
-    }
-
-
-  }
-  startTimer(letter: string) {
-    this.timer = setTimeout(() => {
-      this.mostrarOpcoes(letter);
-    }, 500);
-  }
-  clearTimer() {
-    clearTimeout(this.timer);
   }
 
   triggerInputChange() {

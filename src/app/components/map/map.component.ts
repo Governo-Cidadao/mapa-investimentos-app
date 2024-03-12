@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import L, { Map, latLng, tileLayer } from 'leaflet';
 import { MiniMap } from 'leaflet-control-mini-map';
+import 'leaflet.control.layers.tree';
 import { EstadoService } from '../../service/estado.service';
 import { InvestimentosService } from '../../service/investimentos.service';
 import { MapService } from '../../service/map.service';
 import { TerritorioService } from '../../service/territorio.service';
-import { FeatureUtils } from '../../utils/feature.utils';
+import { HtmlUtil } from '../../utils/html.utils';
+import { TreeUtil } from '../../utils/tree.utils';
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -15,8 +18,15 @@ export class MapComponent {
   INITIAL_COORD = [-5.844865661075205, -36.56710587301696];
   baseMapURl: string = 'http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}';
   layers: L.LayerGroup = new L.LayerGroup();
-  layerControl!: L.Control.Layers;
   invest: any;
+  layerController: any;
+  vetorMaker: any = [];
+
+  structureInvest = {
+    label: ' Investimentos',
+    selectAllCheckbox: 'true',
+    children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
+  };
 
   options = {
     layers: [
@@ -47,11 +57,11 @@ export class MapComponent {
     this.getTerritorioLayer();
     this.getInvestimentosLayer();
     this.mapService.setMap(map);
-    this.filterLayersByInput()
   }
 
   initializeLayerControl(map: Map): void {
-    this.layerControl = L.control.layers({}).addTo(map);
+    this.layerController = L.control.layers.tree();
+    this.layerController.addTo(map);
   }
 
   initializeMiniMap(map: Map): void {
@@ -91,53 +101,58 @@ export class MapComponent {
 
     this.territorioService.findAll()
       .subscribe(response => {
-        const territorio = new L.GeoJSON(response, { style: whiteBackground })
+        new L.GeoJSON(response, { style: whiteBackground })
           .addTo(this.layers);
-        this.layerControl.addOverlay(territorio, "Territórios");
       });
   }
 
   getInvestimentosLayer(): void {
     this.investimentoService.findAllSlim().subscribe(
       response => {
-        this.invest = new L.GeoJSON(response, {
-          pointToLayer: FeatureUtils.setCustomMark,
-          onEachFeature: FeatureUtils.customBindPopup
-        }).addTo(this.layers);
-        this.layerControl.addOverlay(this.invest, "Investimentos");
+        let investimentos = response;
+        let features = (investimentos as any).features;
+        let investimentosMapeamento = TreeUtil.filterAreaTipoCate(features);
+
+        // função responsavel por criar a estrutura requirida pela biblioteca layerTree para ser adicionada ao controler
+        TreeUtil.populateTree(investimentosMapeamento, this.structureInvest, this.vetorMaker);
+        this.layerController.setOverlayTree(this.structureInvest);
+
+        HtmlUtil.marginAndHideTreeHeader();
+        TreeUtil.clickCheckboxTree();
       });
+
+    this.filterLayersByInput();
   }
 
-  filterLayersByInput(): void {
+  filterLayersByInput() {
     const filterInput = document.querySelector('.filtro-pesquisa') as HTMLInputElement;
     filterInput.addEventListener('input', () => {
       const filterValue = filterInput.value.toLowerCase();
-      this.invest.eachLayer((layer: any) => {
-        if (layer._icon) {
-          layer._icon.style.display = 'None';
-          if (multiPartyFilter(layer, filterValue)) {
-            layer._icon.style.display = 'block';
+      for (let i = 0; i < this.vetorMaker.length; i++) {
+        if (this.vetorMaker[i]['marcador']) {
+          this.vetorMaker[i]['marcador'].dragging._marker._icon.style.display = 'none';
+          if (contemMunicipioTipologiaTerritorioCategoriaInvest(this.vetorMaker[i]['feature'], filterValue)) {
+            this.vetorMaker[i]['marcador'].dragging._marker._icon.style.display = 'block';
+          }
+        } else if (this.vetorMaker[i]._path) {
+          this.vetorMaker[i].dragging._marker._icon.display = 'none';
+          if (contemMunicipioTipologiaTerritorioCategoriaInvest(this.vetorMaker[i]['feature'], filterValue)) {
+            this.vetorMaker[i].dragging._marker._icon.display = 'block';
           }
         }
-        else if (layer._path) {
-          layer._path.style.display = 'None';
-          if (multiPartyFilter(layer, filterValue)) {
-            layer._path.style.display = 'block';
-          }
-        }
-      });
+      }
     });
 
-    function multiPartyFilter(layer: any, filterValue: string) {
-      const estabelecimento = layer.feature.properties.estabelecimento;
-      const municipio = layer.feature.properties.municipio
-      const territorio = layer.feature.properties.territorio
-      const tipoDeInvestimento = layer.feature.properties.tipoDeInvestimento
-      const categoriaMapeamento = layer.feature.properties.categoriaMapeamento
+    function contemMunicipioTipologiaTerritorioCategoriaInvest(layer: any, filterValue: string) {
+      const estabelecimento = layer.properties.estabelecimento;
+      const municipio = layer.properties.municipio;
+      const territorio = layer.properties.territorio;
+      const tipoDeInvestimento = layer.properties.tipoDeInvestimento;
+      const categoriaMapeamento = layer.properties.categoriaMapeamento;
 
       return municipio.toLowerCase().includes(filterValue) || territorio.toLowerCase().includes(filterValue)
         || tipoDeInvestimento.toLowerCase().includes(filterValue) || categoriaMapeamento.toLowerCase().includes(filterValue)
         || estabelecimento.toLowerCase().includes(filterValue);
     }
-  };
+  }
 }

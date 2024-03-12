@@ -21,6 +21,23 @@ export class FeatureUtils {
         return L.marker(latLng, { icon: myIcon });
     }
 
+    public static createMarker(elemento: any, label: string, vetorMaker: any) {
+        const coord = elemento.geometry.coordinates;
+        const type = elemento.geometry.type;
+        let structureElement: any;
+        if (type == "Point") {
+            const marker = FeatureUtils.setCustomMark(elemento, L.latLng(coord[1], coord[0]));
+            FeatureUtils.customBindPopup(elemento, marker);
+            const objectMarkFeature = {
+                marcador: marker,
+                feature: elemento
+            };
+            vetorMaker.push(objectMarkFeature);
+            structureElement = { label: label, layer: marker };
+        }
+        return structureElement
+    }
+
     public static getIconPath(feature: Feature, basePath: string): string {
         if (!feature.properties)
             return "";
@@ -35,7 +52,7 @@ export class FeatureUtils {
             'BARRAGEM': '/Barragem.svg',
             'CENTRO DE COMERCIALIZAÇÃO': '/Unidade de comercializacao.svg',
             'CENTRO DE FORMAÇÃO': '/Centro de formação.svg',
-            'CENTRO DE MANEJO ': '/Centros de manejo.svg',
+            'CENTRO DE MANEJO': '/Centros de manejo.svg',
             'COMERCIALIZAÇÃO': '/comercializacao 1.svg',
             'DIBA': '/RECUPERAÇÃO ESTRUTURAL DO DIBA.svg',
             'EQUIPAMENTO CULTURAL': '/Cultura.svg',
@@ -61,9 +78,9 @@ export class FeatureUtils {
             'CENTRO ADMINISTRATIVO': '/Centro administrativo.svg',
             'POSTO INTEGRADO DE FISCALIZAÇÃO': '/POSTO DE FISCALIZAÇÃO.svg',
             'SINE': '/Sine.svg',
-            'ENFRENTAMENTO DA COVID-19': '/Enfrentamento da covid-19.svg',
+            'ENFRENTAMENTO DA COVID -19': '/Enfrentamento da covid-19.svg',
             'HOSPITAL DA MULHER': '/hospital regional.svg',
-            'HOSPITAL REGIONAL ': '/hospital regional.svg',
+            'HOSPITAL REGIONAL': '/hospital regional.svg',
             'LABORATÓRIO DE ANATOMOCITOPATOLOGIA': '/Laboratório.svg',
             'MATERNIDADES': '/hospital regional.svg',
             'REDE METROPOLITANA DE DADOS': '/Rede metropolitana de dados.svg',
