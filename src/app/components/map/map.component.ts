@@ -57,7 +57,6 @@ export class MapComponent {
     this.getTerritorioLayer();
     this.getInvestimentosLayer();
     this.mapService.setMap(map);
-
   }
 
   initializeLayerControl(map: Map): void {

@@ -1,5 +1,8 @@
 .container-header {
     display: flex;
+    position: absolute;
+    z-index: 500;
+    top: 0;
 }
 
 .container-header img {

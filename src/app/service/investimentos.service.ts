@@ -19,4 +19,8 @@ export class InvestimentosService {
 	findAllSlim(): Observable<GeoJsonObject> {
 		return this.http.get<GeoJsonObject>(`${this.baseURL}/slim`);
 	}
+
+	findAllTree(): Observable<GeoJsonObject> {
+		return this.http.get<GeoJsonObject>(`${this.baseURL}/tree`);
+	}
 }
