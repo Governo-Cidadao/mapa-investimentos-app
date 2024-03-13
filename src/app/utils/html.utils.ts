@@ -112,4 +112,92 @@ export class HtmlUtil {
     button.appendChild(icon);
     return button;
   }
+
+
+  public static marginAndHideTreeHeader(): void {
+    const headerController: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('.leaflet-layerstree-header.leaflet-layerstree-header-pointer');
+    const childrensController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-children");
+    const spanController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-nevershow");
+
+    if (spanController) {
+      spanController.forEach(elemento => {
+        elemento.style.display = 'none'
+      })
+    }
+
+    if (childrensController) {
+      childrensController.forEach(elemento => {
+        elemento.style.marginLeft = '15px'
+      })
+    }
+
+    headerController.forEach(elemento => {
+
+      let buttonExpand = this.createButonnExpandCuston(elemento)
+      elemento.appendChild(buttonExpand)
+      let span = elemento.querySelector('span')
+      if (span)
+        span.style.display = 'none'
+
+    })
+
+    headerController.forEach(element => {
+      const children: HTMLCollection = element.parentElement!.children;
+      for (let i = 0; i < children.length; i++) {
+        const child: HTMLElement = children[i] as HTMLElement;
+        if (child !== element) {
+          child.style.display = 'none';
+        }
+      }
+
+      HtmlUtil.addHideElementEvent(element);
+    })
+  }
+
+  public static createButonnExpandCuston(element: any) {
+    const buttonExpand = document.createElement('div')
+    buttonExpand.classList.add('buton-expand')
+    buttonExpand.textContent = '+';
+    buttonExpand.style.display = 'inline-block';
+    buttonExpand.style.backgroundColor = 'buttonface';
+    buttonExpand.style.color = 'black';
+    buttonExpand.style.padding = '1px';
+    buttonExpand.style.width = '19px';
+    buttonExpand.style.height = '17px';
+    buttonExpand.style.border = 'solid 1px black';
+    buttonExpand.style.borderRadius = '3px';
+    buttonExpand.style.cursor = 'pointer';
+    buttonExpand.style.textAlign = 'center';
+    buttonExpand.style.marginLeft = '5px';
+    buttonExpand.style.marginBottom = '1px';
+
+
+    this.addButonExpandEvent(buttonExpand)
+
+    return buttonExpand
+  }
+
+  public static addButonExpandEvent(buttonExpand: HTMLElement) {
+    buttonExpand.addEventListener('click', function () {
+      if (this.textContent == '+') {
+        this.textContent = '-';
+      }
+      else this.textContent = '+'
+    });
+
+  }
+
+  public static addHideElementEvent(element: HTMLElement) {
+    element.addEventListener('click', () => {
+      const children: HTMLCollection = element.parentElement!.children;
+      for (let i = 0; i < children.length; i++) {
+        const child: HTMLElement = children[i] as HTMLElement;
+        if (child !== element)
+          if (child.style.display === 'none')
+            child.style.display = 'block';
+          else
+            child.style.display = 'none';
+      }
+    })
+  }
 }
