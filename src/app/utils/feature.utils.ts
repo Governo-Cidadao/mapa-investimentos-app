@@ -1,8 +1,8 @@
 import { Feature } from "geojson";
 import L, { LatLng, Layer } from "leaflet";
+import { CarouselComponent } from "../components/carousel/carousel.component";
 import { ModalComponent } from "../components/modal/modal.component";
 import { HtmlUtil } from "./html.utils";
-import { CarouselComponent } from "../components/carousel/carousel.component";
 
 export class FeatureUtils {
 
@@ -22,11 +22,11 @@ export class FeatureUtils {
     }
 
     public static createMarker(elemento: any, label: string, vetorMaker: any) {
-        const coord = elemento.geometry.coordinates;
+        const coords = elemento.geometry.coordinates;
         const type = elemento.geometry.type;
         let structureElement: any;
         if (type == "Point") {
-            const marker = FeatureUtils.setCustomMark(elemento, L.latLng(coord[1], coord[0]));
+            const marker = FeatureUtils.setCustomMark(elemento, L.latLng(coords[1], coords[0]));
             FeatureUtils.customBindPopup(elemento, marker);
             const objectMarkFeature = {
                 marcador: marker,
@@ -35,6 +35,20 @@ export class FeatureUtils {
             vetorMaker.push(objectMarkFeature);
             structureElement = { label: label, layer: marker };
         }
+        if (type == "MultiLineString") {
+            coords.forEach((line: any) => {
+                const latLngs = line.map((coords: number[]) => L.latLng(coords[1], coords[0]));
+                const polyline = L.polyline(latLngs);
+                FeatureUtils.customBindPopup(elemento, polyline);
+                const objectPolylineFeature = {
+                    polyline: polyline,
+                    feature: elemento
+                };
+                vetorMaker.push(objectPolylineFeature);
+                structureElement = { label: label, layer: polyline };
+            });
+        }
+
         return structureElement
     }
 

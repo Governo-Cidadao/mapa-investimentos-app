@@ -134,10 +134,15 @@ export class MapComponent {
           if (contemMunicipioTipologiaTerritorioCategoriaInvest(this.vetorMaker[i]['feature'], filterValue)) {
             this.vetorMaker[i]['marcador'].dragging._marker._icon.style.display = 'block';
           }
-        } else if (this.vetorMaker[i]._path) {
-          this.vetorMaker[i].dragging._marker._icon.display = 'none';
-          if (contemMunicipioTipologiaTerritorioCategoriaInvest(this.vetorMaker[i]['feature'], filterValue)) {
-            this.vetorMaker[i].dragging._marker._icon.display = 'block';
+        }
+        else if (this.vetorMaker[i]['polyline']) {
+          const polyline = this.vetorMaker[i]['polyline']
+          const feature = this.vetorMaker[i]['feature']
+          if (polyline._path){
+            polyline._path.style.display = 'none';
+            if (contemMunicipioTipologiaTerritorioCategoriaInvest(feature, filterValue)) {
+              polyline._path.style.display = 'block';
+            }
           }
         }
       }
