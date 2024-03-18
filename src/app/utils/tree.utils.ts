@@ -1,11 +1,15 @@
 import { FeatureUtils } from "./feature.utils";
 
 export class TreeUtil {
+    
+    private static capitalizeString(str: string): string {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
 
     public static populateTree(investimentosMapeamento: any, structureInvest: any, vetorMaker: any) {
         investimentosMapeamento.forEach((area: any) => {
             let areaNode = {
-                label: ' ' + area.areaMapeamento,
+                label: ' ' + this.capitalizeString(area.areaMapeamento),
                 selectAllCheckbox: true,
                 children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
 
@@ -13,7 +17,7 @@ export class TreeUtil {
 
             area.tipologias.forEach((tipologia: any) => {
                 let tipologiaNode = {
-                    label: ' ' + tipologia.tipologiaMapeamento,
+                    label: ' ' + this.capitalizeString(tipologia.tipologiaMapeamento),
                     selectAllCheckbox: true,
                     children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
 
@@ -21,15 +25,9 @@ export class TreeUtil {
                 areaNode.children.push(tipologiaNode);
 
                 tipologia.categorias.forEach((categoria: any) => {
-                    // let categoriaNode = {
-                    //   label: ' ' + categoria.categoriaMapeamento,
-                    //   selectAllCheckbox: true,
-                    //   children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
-
-                    // };
 
                     categoria.elementos.forEach((elemento: any) => {
-                        let label = ' ' + elemento.properties.categoriaMapeamento;
+                        let label = ' ' + this.capitalizeString(elemento.properties.categoriaMapeamento);
                         let marcador = FeatureUtils.createMarker(elemento, label, vetorMaker);
                         tipologiaNode.children.push(marcador);
 

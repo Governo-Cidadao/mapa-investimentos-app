@@ -32,16 +32,16 @@
 .control-layers_personalizado {
     position: absolute;
     display: none;
-    margin-left: 520px;
+    margin-left: 620px;
     top: 9px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
     background: #fff;
     border-radius: 5px;
     padding: 8px;
     z-index: 800;
-    overflow-y: auto;
-    max-width: 300px;
-    max-height: 500px;
+    /* overflow-y: auto; */
+    width: 220px;
+    /* max-height: 500px; */
 }
 
 .container_buton_personalizado {
