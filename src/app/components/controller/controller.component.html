@@ -1,22 +1,26 @@
 <div class="container-controller">
   <button class="arrastavel">
-    <fa-icon [icon]="faArrowsAlt"></fa-icon> 
+    <fa-icon [icon]="faArrowsAlt"></fa-icon>
   </button>
   <div class="nav-controller">
     <div class="button top bkg-btn" (click)="mover(0, 0.14)" (mousedown)="movimentacao(0, 0.14, true)"
-      (mouseup)="movimentacao(0, 0.14, false)">
+      (mouseup)="movimentacao(0, 0.14, false)" (mouseout)="movimentacao(0, 0.14, false)"
+      (touchstart)="movimentacao(0, 0.14, true)" (touchend)="movimentacao(0, 0.14, false)">
       <img src="../../../assets/controller/up_arrow.svg">
     </div>
     <div class="button right bkg-btn" (click)="mover(0.14, 0)" (mousedown)="movimentacao(0.14, 0, true)"
-      (mouseup)="movimentacao(0.14, 0, false)">
+      (mouseup)="movimentacao(0.14, 0, false)" (mouseout)="movimentacao(0.14, 0, false)"
+      (touchstart)="movimentacao(0.14, 0, true)" (touchend)="movimentacao(0.14, 0, false)">
       <img src="../../../assets/controller/right_arrow.svg">
     </div>
     <div class="button left bkg-btn" (click)="mover(-0.14, 0)" (mousedown)="movimentacao(-0.14, 0, true)"
-      (mouseup)="movimentacao(-0.14, 0, false)">
+      (mouseup)="movimentacao(-0.14, 0, false)" (mouseout)="movimentacao(-0.14, 0, false)"
+      (touchstart)="movimentacao(-0.14, 0, true)" (touchend)="movimentacao(-0.14, 0, false)">
       <img src="../../../assets/controller/left_arrow.svg">
     </div>
     <div class="button bottom bkg-btn" (click)="mover(0, -0.14)" (mousedown)="movimentacao(0, -0.14, true)"
-      (mouseup)="movimentacao(0, -0.14, false)">
+      (mouseup)="movimentacao(0, -0.14, false)" (mouseout)="movimentacao(0, -0.14, false)"
+      (touchstart)="movimentacao(0, -0.14, true)" (touchend)="movimentacao(0, -0.14, false)">
       <img src="../../../assets/controller/down_arrow.svg">
     </div>
     <div class="center-button bkg-btn" (click)="centralizarMapa()">
