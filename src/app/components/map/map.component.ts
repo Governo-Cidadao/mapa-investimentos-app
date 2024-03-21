@@ -30,10 +30,10 @@ export class MapComponent {
 
   options = {
     layers: [
-      tileLayer(this.baseMapURl, { maxZoom: 12, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '© contributors: @joabesamuell, @_ig0rdias, @celilimaf, @rodmatth, @jonas.ssilva' })
+      tileLayer(this.baseMapURl, { maxZoom: 12, subdomains: ['mt0', 'mt1', 'mt2', 'mt3'], attribution: '© contributors: @rodmatth, @jonas.ssilva, @_ig0rdias, @joabesamuell, @celilimaf' })
     ],
     zoom: 8,
-    attributionControl: false,
+    attributionControl: true,
     zoomControl: false,
     minZoom: 8,
     maxZoom: 12,
@@ -57,6 +57,9 @@ export class MapComponent {
     this.getTerritorioLayer();
     this.getInvestimentosLayer();
     this.mapService.setMap(map);
+
+    // Removing ukrain flag
+    map.attributionControl.setPrefix("");
   }
 
   initializeLayerControl(map: Map): void {
