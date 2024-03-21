@@ -110,6 +110,7 @@ export class MapComponent {
     this.investimentoService.findAllSlim().subscribe(
       response => {
         let investimentos = response;
+        console.log(response)
         let features = (investimentos as any).features;
         let investimentosMapeamento = TreeUtil.filterAreaTipoCate(features);
 

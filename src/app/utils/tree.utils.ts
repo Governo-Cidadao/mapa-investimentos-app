@@ -25,16 +25,24 @@ export class TreeUtil {
                 areaNode.children.push(tipologiaNode);
 
                 tipologia.categorias.forEach((categoria: any) => {
+                    let categoriaNode = {
+                        label: ' ' + this.capitalizeString(categoria.categoriaMapeamento),
+                        selectAllCheckbox: true,
+                        children: [] as Array<{ label: string; selectAllCheckbox: boolean; children: Array<any> }>
+    
+                    };
+                    tipologiaNode.children.push(categoriaNode);
 
                     categoria.elementos.forEach((elemento: any) => {
-                        let label = ' ' + this.capitalizeString(elemento.properties.categoriaMapeamento);
+                        let label = ' ' + this.capitalizeString(elemento.properties.investimentoMapeamento);
                         let marcador = FeatureUtils.createMarker(elemento, label, vetorMaker);
-                        tipologiaNode.children.push(marcador);
+                        categoriaNode.children.push(marcador);
 
                     })
 
                 })
             })
+    
             structureInvest.children.push(areaNode);
         })
     }

@@ -1,3 +1,4 @@
+import { query } from "@angular/animations";
 import { CarouselComponent } from "../components/carousel/carousel.component";
 
 export class HtmlUtil {
@@ -118,6 +119,7 @@ export class HtmlUtil {
     const headerController: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('.leaflet-layerstree-header.leaflet-layerstree-header-pointer');
     const childrensController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-children");
     const spanController: NodeListOf<HTMLElement> | null = document.querySelectorAll<HTMLElement>(".leaflet-layerstree-nevershow");
+    const ultimoFilho: HTMLElement | null = document.querySelector<HTMLElement>(".leaflet-layerstree-children");
 
     if (spanController) {
       spanController.forEach(elemento => {
@@ -125,8 +127,10 @@ export class HtmlUtil {
       })
     }
 
+
     if (childrensController) {
       childrensController.forEach(elemento => {
+        // console.log(elemento)
         elemento.style.marginLeft = '15px'
       })
     }
