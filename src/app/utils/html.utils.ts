@@ -130,7 +130,6 @@ export class HtmlUtil {
 
     if (childrensController) {
       childrensController.forEach(elemento => {
-        // console.log(elemento)
         elemento.style.marginLeft = '15px'
       })
     }
