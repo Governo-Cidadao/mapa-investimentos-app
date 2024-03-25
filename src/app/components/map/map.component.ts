@@ -8,6 +8,7 @@ import { MapService } from '../../service/map.service';
 import { TerritorioService } from '../../service/territorio.service';
 import { HtmlUtil } from '../../utils/html.utils';
 import { TreeUtil } from '../../utils/tree.utils';
+import { FilterUtil } from '../../utils/filter.utils';
 
 @Component({
   selector: 'app-map',
@@ -134,7 +135,7 @@ export class MapComponent {
       for (let i = 0; i < this.vetorMaker.length; i++) {
         if (this.vetorMaker[i]['marcador']) {
           this.vetorMaker[i]['marcador'].dragging._marker._icon.style.display = 'none';
-          if (contemMunicipioTipologiaTerritorioCategoriaInvest(this.vetorMaker[i]['feature'], filterValue)) {
+          if (FilterUtil.hasEstadoMuniTerrTipoInvestCateg(this.vetorMaker[i]['feature'], filterValue)) {
             this.vetorMaker[i]['marcador'].dragging._marker._icon.style.display = 'block';
           }
         }
@@ -143,24 +144,12 @@ export class MapComponent {
           const feature = this.vetorMaker[i]['feature']
           if (polyline._path){
             polyline._path.style.display = 'none';
-            if (contemMunicipioTipologiaTerritorioCategoriaInvest(feature, filterValue)) {
+            if (FilterUtil.hasEstadoMuniTerrTipoInvestCateg(feature, filterValue)) {
               polyline._path.style.display = 'block';
             }
           }
         }
       }
     });
-
-    function contemMunicipioTipologiaTerritorioCategoriaInvest(layer: any, filterValue: string) {
-      const estabelecimento = layer.properties.estabelecimento;
-      const municipio = layer.properties.municipio;
-      const territorio = layer.properties.territorio;
-      const tipoDeInvestimento = layer.properties.tipoDeInvestimento;
-      const categoriaMapeamento = layer.properties.categoriaMapeamento;
-
-      return municipio.toLowerCase().includes(filterValue) || territorio.toLowerCase().includes(filterValue)
-        || tipoDeInvestimento.toLowerCase().includes(filterValue) || categoriaMapeamento.toLowerCase().includes(filterValue)
-        || estabelecimento.toLowerCase().includes(filterValue);
-    }
   }
 }
