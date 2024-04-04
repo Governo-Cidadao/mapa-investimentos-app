@@ -35,7 +35,7 @@ export class MapComponent {
     ],
     zoom: 8,
     attributionControl: true,
-    zoomControl: false,
+    zoomControl: true,
     minZoom: 8,
     maxZoom: 12,
     zoomSnap: 0.10,
