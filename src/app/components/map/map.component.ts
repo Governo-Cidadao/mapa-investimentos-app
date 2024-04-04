@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import L, { Map, latLng, tileLayer } from 'leaflet';
 import { MiniMap } from 'leaflet-control-mini-map';
 import 'leaflet.control.layers.tree';
+import 'leaflet-easybutton'
 import { EstadoService } from '../../service/estado.service';
 import { InvestimentosService } from '../../service/investimentos.service';
 import { MapService } from '../../service/map.service';
@@ -16,12 +17,12 @@ import { FilterUtil } from '../../utils/filter.utils';
   styleUrl: './map.component.css'
 })
 export class MapComponent {
-  INITIAL_COORD = [-5.844865661075205, -36.56710587301696];
   baseMapURl: string = 'http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}';
   layers: L.LayerGroup = new L.LayerGroup();
   invest: any;
   layerController: any;
   vetorMaker: any = [];
+  CENTER_COORD = latLng(-5.844865661075205, -36.56710587301696);
 
   structureInvest = {
     label: ' Investimentos',
@@ -41,7 +42,7 @@ export class MapComponent {
     zoomSnap: 0.10,
     closePopupOnClick: false,
     doubleClickZoom: false,
-    center: latLng(this.INITIAL_COORD[0], this.INITIAL_COORD[1])
+    center: this.CENTER_COORD
   };
 
   constructor(
@@ -57,6 +58,7 @@ export class MapComponent {
     this.getBrazilLayer();
     this.getTerritorioLayer();
     this.getInvestimentosLayer();
+    this.addCenterButton(map);
     this.mapService.setMap(map);
 
     // Removing ukrain flag
@@ -110,6 +112,13 @@ export class MapComponent {
       });
   }
 
+  addCenterButton(map: L.Map) {
+    const center = this.CENTER_COORD;
+    L.easyButton('fa-crosshairs fa-lg', function (btn, map) {
+      map.setView(center, 8);
+    }).addTo(map);
+  }
+
   getInvestimentosLayer(): void {
     this.investimentoService.findAllSlim().subscribe(
       response => {
@@ -142,7 +151,7 @@ export class MapComponent {
         else if (this.vetorMaker[i]['polyline']) {
           const polyline = this.vetorMaker[i]['polyline']
           const feature = this.vetorMaker[i]['feature']
-          if (polyline._path){
+          if (polyline._path) {
             polyline._path.style.display = 'none';
             if (FilterUtil.hasEstadoMuniTerrTipoInvestCateg(feature, filterValue)) {
               polyline._path.style.display = 'block';
