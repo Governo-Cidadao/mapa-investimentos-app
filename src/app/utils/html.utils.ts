@@ -31,7 +31,7 @@ export class HtmlUtil {
   public static showElements(option: boolean, elementTarget: HTMLElement) {
     const filtro = document.querySelector<HTMLElement>('.container-input');
     const layers = document.querySelector<HTMLElement>('.container_buton_personalizado');
-    const controller = document.querySelector<HTMLElement>('.container-controller');
+    const controller = document.querySelector<HTMLElement>('.leaflet-control-container');
     const minimap = document.querySelector<HTMLElement>('.leaflet-control-minimap');
 
     filtro!.style.display = 'none';
