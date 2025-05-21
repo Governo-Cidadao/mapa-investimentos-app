@@ -1,27 +1,87 @@
-# MapaInvestimentosApp
+# Mapa de Investimentos
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.0.8.
+<!-- Shields Exemplo, existem N diferentes shield em https://shields.io/ -->
+![GitHub last commit](https://img.shields.io/github/last-commit/Governo-Cidadao/mapa-investimentos-app)
+![GitHub language count](https://img.shields.io/github/languages/count/Governo-Cidadao/mapa-investimentos-app)
+![Github repo size](https://img.shields.io/github/repo-size/Governo-Cidadao/mapa-investimentos-app)
+![Github stars](https://img.shields.io/github/stars/Governo-Cidadao/mapa-investimentos-app)
 
-## Development server
+![Capa do Projeto](https://raw.githubusercontent.com/Governo-Cidadao/Mapa/main/images/docs/mapa_final.jpg)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+> A iniciativa condensa todos os investimentos viabilizados pelo acordo de empréstimo com o Banco Mundial em diversas áreas de atuação. A ferramenta fortalece a transparência com a qual o Projeto Governo Cidadão opera, apresentando, de maneira clara e acessível, como o Rio Grande do Norte foi beneficiado em toda a sua extensão por meio dessas iniciativas.
 
-## Code scaffolding
+## Como executar o projeto
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Siga as etapas abaixo para executar o projeto em sua máquina local:
 
-## Build
+Execute os seguintes comandos a partir da pasta raiz do projeto:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Clone este repositório
 
-## Running unit tests
+```bash
+git clone https://github.com/Governo-Cidadao/Mapa
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Este link pode ser encontrado no botão verde acima `Code`.
 
-## Running end-to-end tests
+### Instale as dependências
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+npm install
+```
 
-## Further help
+### Execute o Projeto
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+ng serve
+```
+
+## Como contribuir
+
+Se você deseja contribuir para este projeto, siga as etapas abaixo:
+
+1. Faça um fork deste repositório.
+2. Crie um branch: `git checkout -b <nome_branch>`.
+3. Faça suas alterações e confirme-as: `git commit -m '<mensagem_commit>'`
+4. Envie para o branch original: `git push origin <nome_do_projeto> / <local>`
+5. Criar a solicitação de pull.
+
+Como alternativa, consulte a documentação do GitHub sobre [como criar uma solicitação de pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
+
+## Membros do Projeto
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/IgorDiasV">
+        <img src="https://github.com/IgorDiasV.png" width="100px">
+        <br>
+        <sub>
+          <b>IgorDiasV</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/matheusslr">
+        <img src="https://github.com/matheusslr.png" width="100px">
+        <br>
+        <sub>
+          <b>Matheusslr</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/jonaspeixoto">
+        <img src="https://github.com/jonaspeixoto.png" width="100px">
+        <br>
+        <sub>
+          <b>Jonaspeixoto</b>
+        </sub>
+      </a>
+    </td>
+  </tr>
+</table>
+
+## Licença
+
+Este projeto está sob licença. Consulte [LICENSE](LICENSE.md) para obter mais informações.
